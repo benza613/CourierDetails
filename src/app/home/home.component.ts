@@ -15,15 +15,6 @@ export class HomeComponent implements OnInit {
       (r) => {
         console.log('r set', r);
 
-        this.httpService.postdata(env.url.server + 'FetchReportData', {}).subscribe(
-          (r) => {
-            console.log('r', r);
-    
-            this.currentData = r;
-          }, (err) => {
-            console.log('err', err);
-    
-          });
 
         this.currentData = r;
       }, (err) => {

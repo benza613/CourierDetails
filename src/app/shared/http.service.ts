@@ -22,12 +22,16 @@ export class HttpService {
             }
         }
         data = data.slice(0, -1);
+        // headers: new HttpHeaders({
+        //     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+
+        // }),
         const httpOptions = {
 
-            headers: new HttpHeaders({
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
 
-            }),
+            }
 
 
         };
