@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: 'CD.aspx', component: HomeComponent
   },
+  { path: '',
+    redirectTo: '/CD.aspx',
+    pathMatch: 'full'
+  },
 ];
 
 @NgModule({

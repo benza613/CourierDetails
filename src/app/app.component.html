@@ -1,6 +1,22 @@
-<div class="row mainView">
-  
-  <div class="col-xs-12 col-sm-12 col-md-12">
-    <router-outlet></router-outlet>
+<div class="col-sm-12 col-md-12">
+  <div class="col-xs-12 col-sm-12 col-md-12 ">
+    <div class="col-xs-12 col-sm-12 col-md-12 ">
+      <ul class="nav nav-tabs">
+        <li class="nav-item" role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLink="/">Home</a>
+        </li>
+        <li class="nav-item" role="presentation" routerLinkActive="active">
+          <a class="nav-link" routerLink="servers">Servers</a>
+        </li>
+        <li class="nav-item" role="presentation" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['users']">Users</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 ">
+    <div class="col-xs-12 col-sm-12 col-md-12 mainRouterView">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

@@ -1,6 +1,9 @@
-<p>
-  home works!
-
-</p>
-<br />
-{{ currentData }}
+<br/>
+<ag-grid-angular 
+    class="ag-theme-balham ag-cust"
+    [rowData]="rowData" 
+    [columnDefs]="columnDefs"
+    (gridReady)="onGridReady($event)"
+    [frameworkComponents]="frameworkComponents"
+    >
+</ag-grid-angular>

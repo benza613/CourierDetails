@@ -36,7 +36,7 @@ export class HttpService {
 
         };
 
-        return this.http.post(url, data, httpOptions)
+        return this.http.post(url, hjson, httpOptions)
             .pipe(map(r => r));
     }
 
