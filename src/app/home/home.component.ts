@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../shared/http.service';
-import { environment as env } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { ButtonRendererComponent } from '../renderer/button-renderer/button-renderer.component';
-
+import { GlobalService } from '../shared/global.service';
 
 @Component({
   selector: 'app-home',
@@ -13,11 +12,11 @@ import { ButtonRendererComponent } from '../renderer/button-renderer/button-rend
 export class HomeComponent implements OnInit {
   private gridApi;
   frameworkComponents: any;
-  
-  constructor(private httpService: HttpService, private router: Router) {
+
+  constructor(private httpService: HttpService, private router: Router, private gs: GlobalService) {
     this.frameworkComponents = {
-      buttonRenderer: ButtonRendererComponent,
-    }
+      buttonRenderer: ButtonRendererComponent
+    };
   }
   currentData;
 
@@ -39,46 +38,38 @@ export class HomeComponent implements OnInit {
       cellRenderer: 'buttonRenderer',
       cellRendererParams: {
         onClick: this.gotoDetailsForm.bind(this),
-        label: 'Click 1'
+        label: 'Edit'
       },
       pinned: 'right'
     }
   ];
 
 
-  // field: 'ocId',
-
-  rowData = [
-    {},
-    {},
-    {}
-  ];
-
-
+  rowData = [{}, {}, {}];
 
   ngOnInit() {
-    this.httpService.postdata(env.url.server + 'FetchDetails', {
-      startDate: "start",
-      endDate: "end1",
-    }).subscribe(
-      (r) => {
-
-        if (r.d.errId == "200") {
+    this.httpService.postdata('FetchDetails',
+      {
+        startDate: 'start',
+        endDate: 'end1'
+      }).subscribe(r => {
+        if (r.d.errId === '200') {
           this.rowData = r.d.oc_details;
+
+          this.gs.setMyGV(r.d.oc_details);
         } else {
           alert(r.d.errMsg);
         }
         this.gridApi.sizeColumnsToFit();
-
-      }, (err) => {
-        console.log('err', err);
-
-      });
+      },
+        err => {
+          console.log('err', err);
+        }
+      );
   }
 
   onGridReady(params) {
     this.gridApi = params.api;
-
 
     setTimeout(function () {
       // params.api.resetRowHeights();
@@ -87,17 +78,11 @@ export class HomeComponent implements OnInit {
   }
 
   public gotoDetailsForm(e) {
+    const id = 'e.rowData';
+    const url = '/CD.aspx/details';
+    const myurl = `${url}/${e.rowData.ocId}`;
 
-    console.log('clicke d ', e.rowData);
-    var id = 'e.rowData';
-    var url = '/details';
-    var myurl = `${url}/${id}`;
-    // this.router.navigateByUrl(myurl).then(e => {
-    //   if (e) {
-    //     console.log("Navigation is successful!");
-    //   } else {
-    //     console.log("Navigation has failed!");
-    //   }
-    // });
+
+    this.router.navigate([myurl]);
   }
 }

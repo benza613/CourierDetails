@@ -7,7 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { DetailFormComponent } from './detail-form/detail-form.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ButtonRendererComponent } from './renderer/button-renderer/button-renderer.component';
-
+import { GlobalService } from './shared/global.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +21,7 @@ import { ButtonRendererComponent } from './renderer/button-renderer/button-rende
     HttpClientModule,
     AgGridModule.withComponents([])
   ],
-  providers: [],
+  providers: [GlobalService],
   entryComponents: [ButtonRendererComponent],
   bootstrap: [AppComponent]
 })

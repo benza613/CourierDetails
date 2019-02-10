@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment as env } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +37,7 @@ export class HttpService {
 
         };
 
-        return this.http.post(url, hjson, httpOptions)
+        return this.http.post(env.url.server + url, hjson, httpOptions)
             .pipe(map(r => r));
     }
 

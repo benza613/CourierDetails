@@ -5,7 +5,9 @@ import { ICellRendererParams, IAfterGuiAttachedParams } from 'ag-grid';
 @Component({
   selector: 'app-button-renderer',
   template: `
-  <button type="button" class="btn btn-sm btn-primary fa fa-arrow-right" title="{{label}}" (click)="onClick($event)">{{label}}</button>
+  <button *ngIf="params.node.data.ocId !== undefined" type="button"
+  class="btn btn-sm btn-primary fa fa-arrow-right"
+   title="{{label}}" (click)="onClick($event)">{{label}}</button>
   `,
   styles: []
 })
@@ -15,6 +17,7 @@ export class ButtonRendererComponent implements ICellRendererAngularComp {
   label: string;
 
   agInit(params): void {
+    console.log();
     this.params = params;
     this.label = this.params.label || null;
   }
@@ -32,7 +35,7 @@ export class ButtonRendererComponent implements ICellRendererAngularComp {
         event: $event,
         rowData: this.params.node.data
         // ...something
-      }
+      };
       this.params.onClick(params);
 
     }
