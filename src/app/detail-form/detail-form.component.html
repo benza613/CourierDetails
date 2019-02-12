@@ -1,40 +1,53 @@
-<form>
+<form [formGroup]="courierForm" (ngSubmit)="onSubmit()">
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputEmail4">Date</label>
-      <input type="text" class="form-control" id="iDate" placeholder="Date">
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd" formControlName="ocDate" [ngClass]="{ 'is-invalid': submitted && f.ocDate.errors }"
+          name="iDate" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+        </div>
+      </div>
     </div>
     <div class="form-group col-md-4">
       <label for="inputPassword4">Courier Name</label>
-      <input type="text" class="form-control" id="iCourierName" placeholder="Courier Name">
+      <input type="text" class="form-control" id="iCourierName" formControlName="courier" [ngClass]="{ 'is-invalid': submitted && f.courier.errors }"
+        placeholder="Courier Name">
     </div>
     <div class="form-group col-md-4">
       <label for="inputPassword4">From Employee</label>
-      <input type="text" class="form-control" id="iEmpFrom" placeholder="From Employee">
+      <input type="text" class="form-control" id="iEmpFrom" formControlName="empFrom" [ngClass]="{ 'is-invalid': submitted && f.empFrom.errors }"
+        placeholder="From Employee">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputEmail4">City</label>
-      <input type="text" class="form-control" id="iCity" placeholder="City">
+      <input type="text" class="form-control" id="iCity" formControlName="cityTo" [ngClass]="{ 'is-invalid': submitted && f.cityTo.errors }"
+        placeholder="City">
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
       <label for="inputPassword4">Mode</label>
-      <input type="text" class="form-control" id="iMode" placeholder="Mode">
+      <input type="text" class="form-control" id="iMode" formControlName="mode" [ngClass]="{ 'is-invalid': submitted && f.mode.errors }"
+        placeholder="Mode">
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
       <label for="inputPassword4">Place of Delivery</label>
-      <input type="text" class="form-control" id="iPOD" placeholder="Place of Delivery">
+      <input type="text" class="form-control" id="iPOD" formControlName="pod" [ngClass]="{ 'is-invalid': submitted && f.pod.errors }"
+        placeholder="Place of Delivery">
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-5">
       <label for="inputPassword4">Weight / Units</label>
-      <div class="input-group mb-3">
+      <div class="input-group">
         <div class="input-group-prepend">
-          <input type="text" class="form-control" id="iWt" placeholder="Weight">
+          <input type="text" class="form-control" id="iWt" formControlName="ocWt" [ngClass]="{ 'is-invalid': submitted && f.ocWt.errors }"
+            placeholder="Weight">
         </div>
-        <select id="iMode" class="form-control">
-          <option selected>Choose Units...</option>
-          <option>...</option>
+        <select id="iMode" class="form-control" formControlName="ocWtUM" [ngClass]="{ 'is-invalid': submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption }">
+          <option value="KGS">KGS</option>
+          <option value="TONNES">TONNES</option>
+          <option value="kgs">kgs</option>
         </select>
       </div>
     </div>
@@ -43,24 +56,55 @@
     <div class="form-group col-md-4">
       <div class="form-group">
         <label for="inputPassword4">Recieved By: </label>
-        <input type="text" class="form-control" id="iMode" placeholder="Units">
+        <input type="text" class="form-control" id="iMode" placeholder="Person" formControlName="ocRecieve" [ngClass]="{ 'is-invalid': submitted && f.ocRecieve.errors }">
       </div>
       <div class="form-group">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="gridCheck">
-          <label class="form-check-label" for="gridCheck">
-            Is covering letter required
-          </label>
-        </div>
+        <label for="docChecklist">Document CheckList: </label>
+
+        <ul id="docChecklist" class="list-group">
+          <li class="list-group-item list-group-item-danger">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck1">
+              <label class="form-check-label" for="gridCheck1">
+                Covering Letter
+              </label>
+
+            </div>
+          </li>
+          <li class="list-group-item list-group-item-info">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck2">
+              <label class="form-check-label" for="gridCheck2">
+                Courier Receipt
+              </label>
+            </div>
+          </li>
+          <li class="list-group-item list-group-item-info">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck3">
+              <label class="form-check-label" for="gridCheck3">
+                Courier Acknowledgement
+              </label>
+            </div>
+          </li>
+        </ul>
       </div>
+
     </div>
     <div class="form-group col-md-8">
       <label for="inputPassword4">Remarks</label>
+      <textarea class="form-control" id="gridCheck" rows="4" formControlName="remark" [ngClass]="{ 'is-invalid': submitted && f.remark.errors }"></textarea>
 
-      <textarea class="form-control" id="gridCheck"></textarea>
+      <div class="form-row mt-5">
+        <div class="form-group col-md-6">
+          <button type="submit" class="btn btn-success btn-block">Update Courier</button>
+        </div>
+        <div class="form-group col-md-6">
+          <button type="button" class="btn btn-danger btn-block">Delete</button>
+        </div>
 
+      </div>
     </div>
-  </div>
 
-  <button type="submit" class="btn btn-primary">Sign in</button>
+  </div>
 </form>

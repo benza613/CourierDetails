@@ -22,16 +22,16 @@
 </div> -->
 
 <div class="card bg-light">
-  <div class="card-header">
+  <div class="card-header bg-primary">
     <ul class="nav nav-tabs card-header-tabs text-white">
       <li class="nav-item" role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link" routerLink="/">Home</a>
+        <a class="nav-link bg-primary text-white" routerLink="/">Home</a>
       </li>
-      <li class="nav-item" role="presentation" routerLinkActive="active">
-        <a class="nav-link" routerLink="servers">Servers</a>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link bg-primary text-white" routerLink="details">Courier Details</a>
       </li>
-      <li class="nav-item" role="presentation" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['users']">Users</a>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link bg-primary text-white" [routerLink]="['users']">Upload Documents</a>
       </li>
     </ul>
   </div>
