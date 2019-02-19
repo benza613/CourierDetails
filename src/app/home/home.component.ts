@@ -3,6 +3,7 @@ import { HttpService } from '../shared/http.service';
 import { Router } from '@angular/router';
 import { ButtonRendererComponent } from '../renderer/button-renderer/button-renderer.component';
 import { GlobalService } from '../shared/global.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomeComponent implements OnInit {
   private gridApi;
   frameworkComponents: any;
 
-  constructor(private httpService: HttpService, private router: Router, private gs: GlobalService) {
+  constructor(private httpService: HttpService, private router: Router, private gs: GlobalService, private _authService: AuthService) {
     this.frameworkComponents = {
       buttonRenderer: ButtonRendererComponent
     };
@@ -48,6 +49,7 @@ export class HomeComponent implements OnInit {
   rowData = [{}, {}, {}];
 
   ngOnInit() {
+    this._authService.login();
     this.httpService.postdata('FetchDetails',
       {
         startDate: 'start',

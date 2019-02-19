@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: 'CD.aspx/details/:id',
     component: DetailFormComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'CD.aspx/details',
