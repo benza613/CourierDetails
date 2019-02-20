@@ -64,26 +64,18 @@
         <ul id="docChecklist" class="list-group">
           <li class="list-group-item list-group-item-danger">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck1">
-              <label class="form-check-label" for="gridCheck1">
+              <input class="form-check-input" type="checkbox" id="0">
+              <label class="form-check-label" for="gridCheck0">
                 Covering Letter
               </label>
 
             </div>
           </li>
-          <li class="list-group-item list-group-item-info">
+          <li *ngFor="let item of chekLstData" class="list-group-item list-group-item-info">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck2">
-              <label class="form-check-label" for="gridCheck2">
-                Courier Receipt
-              </label>
-            </div>
-          </li>
-          <li class="list-group-item list-group-item-info">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck3">
-              <label class="form-check-label" for="gridCheck3">
-                Courier Acknowledgement
+              <input class="form-check-input" [(ngModel)]="item.checked" type="checkbox" id="gridCheck{{item.oclId}}">
+              <label class="form-check-label" for="gridCheck{{item.oclId}}">
+                {{item.oclTask}}
               </label>
             </div>
           </li>

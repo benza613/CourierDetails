@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class GlobalService {
 
-  myGlobalVar;
+  _courListData;
 
 
   constructor() {
@@ -14,12 +14,16 @@ export class GlobalService {
 
   }
 
-  setMyGV(val: any) {
-    this.myGlobalVar = val;
+  setGV_CourierData(val: any) {
+    this._courListData = val;
   }
 
-  getMyGV(ocId: any) {
+  getCourierDet(ocId: any) {
     // tslint:disable-next-line:triple-equals
-    return this.myGlobalVar.filter((x) => x.ocId == ocId);
+    return {
+      rowData: this._courListData.oc_details.filter((x) => x.ocId == ocId),
+      arrChekLst: this._courListData.oc_checklist
+    }
   }
+
 }

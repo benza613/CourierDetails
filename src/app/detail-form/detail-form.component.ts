@@ -14,6 +14,8 @@ export class DetailFormComponent implements OnInit {
   courierForm: FormGroup;
   submitted = false;
   courierData: any;
+  chekLstData: any;
+
 
   constructor(private route: ActivatedRoute,
     private router: Router, private gs: GlobalService,
@@ -23,7 +25,10 @@ export class DetailFormComponent implements OnInit {
   ngOnInit() {
 
     const id = this.route.snapshot.paramMap.get('id');
-    this.courierData = this.gs.getMyGV(id);
+
+    let gvData = this.gs.getCourierDet(id);
+    this.courierData = gvData.rowData;
+    this.chekLstData = gvData.arrChekLst;
     console.log(this.courierData);
 
     this.courierForm = this.formBuilder.group({
@@ -75,5 +80,7 @@ export class DetailFormComponent implements OnInit {
     }
 
     alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.courierForm.value))
+    console.log(this.courierForm.value);
+    console.log(this.chekLstData);
   }
 }

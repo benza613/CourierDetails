@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
         if (r.d.errId === '200') {
           this.rowData = r.d.oc_details;
 
-          this.gs.setMyGV(r.d.oc_details);
+          this.gs.setGV_CourierData(r.d);
         } else {
           alert(r.d.errMsg);
         }
