@@ -28,10 +28,12 @@
         <a class="nav-link bg-primary text-white" routerLink="/">Home</a>
       </li>
       <li class="nav-item" role="presentation">
-        <a class="nav-link bg-primary text-white" routerLink="details">Courier Details</a>
+        <a class="nav-link bg-primary text-white" [class.disabled]="gs.isNavDisabled()" routerLink="CD.aspx/details">Courier
+          Details</a>
       </li>
       <li class="nav-item" role="presentation">
-        <a class="nav-link bg-primary text-white" [routerLink]="['users']">Upload Documents</a>
+        <a class="nav-link bg-primary text-white" [class.disabled]="gs.isNavDisabled()" [routerLink]="['CD.aspx','docs',gs.getCurrentCourId()]">Upload
+          Documents</a>
       </li>
     </ul>
   </div>

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DetailFormComponent } from './detail-form/detail-form.component';
 import { AuthGuard } from './auth/auth.guard';
+import { UploadPageComponent } from './upload-page/upload-page.component';
 
 const routes: Routes = [
   {
@@ -14,9 +15,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'CD.aspx/docs/:id',
+    component: UploadPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'CD.aspx/details',
-    redirectTo: '/CD.aspx',
-    pathMatch: 'full',
+    component: DetailFormComponent,
     canActivate: [AuthGuard],
 
   },

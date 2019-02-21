@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
       headerName: 'Edit',
       cellRenderer: 'buttonRenderer',
       cellRendererParams: {
-        onClick: this.gotoDetailsForm.bind(this),
+        onClick: this.editDetailsForm.bind(this),
         label: 'Edit'
       },
       pinned: 'right'
@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit {
   rowData = [{}, {}, {}];
 
   ngOnInit() {
+    this.gs.disableNav();
     this._authService.login();
     this.httpService.postdata('FetchDetails',
       {
@@ -79,12 +80,17 @@ export class HomeComponent implements OnInit {
     }, 500);
   }
 
-  public gotoDetailsForm(e) {
+  public editDetailsForm(e) {
     const id = 'e.rowData';
     const url = '/CD.aspx/details';
     const myurl = `${url}/${e.rowData.ocId}`;
 
 
+    this.router.navigate([myurl]);
+  }
+
+  public addDetailsForm() {
+    let myurl = `/CD.aspx/details/`;
     this.router.navigate([myurl]);
   }
 }

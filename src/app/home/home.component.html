@@ -1,9 +1,7 @@
-<br/>
-<ag-grid-angular 
-    class="ag-theme-balham ag-cust"
-    [rowData]="rowData" 
-    [columnDefs]="columnDefs"
-    (gridReady)="onGridReady($event)"
-    [frameworkComponents]="frameworkComponents"
-    >
+<div class="col-md-3">
+  <button type="button" class="btn btn-success btn-block" (click)="addDetailsForm()">ADD NEW COURIER</button>
+</div>
+<br />
+<ag-grid-angular class="ag-theme-balham ag-cust" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
+  [frameworkComponents]="frameworkComponents">
 </ag-grid-angular>

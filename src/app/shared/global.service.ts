@@ -6,7 +6,9 @@ import { Injectable } from '@angular/core';
 export class GlobalService {
 
   _courListData;
+  _navFSFrame = true;
 
+  _currentCourierId;
 
   constructor() {
 
@@ -18,12 +20,38 @@ export class GlobalService {
     this._courListData = val;
   }
 
+  setGV_AddCourRow(val: any) {
+    this._courListData.oc_details.push(val);
+
+  }
+
   getCourierDet(ocId: any) {
+
+    this._currentCourierId = ocId;
     // tslint:disable-next-line:triple-equals
     return {
       rowData: this._courListData.oc_details.filter((x) => x.ocId == ocId),
-      arrChekLst: this._courListData.oc_checklist
+      oc_checklist: this._courListData.oc_checklist,
+      oc_emplist: this._courListData.oc_emplist
     }
+  }
+
+  getCurrentCourId() {
+    return this._currentCourierId;
+  }
+
+  isNavDisabled() {
+    return this._navFSFrame;
+  }
+
+  enableNav() {
+    this._navFSFrame = false;
+    return true;
+  }
+
+  disableNav() {
+    this._navFSFrame = true;
+    return true;
   }
 
 }

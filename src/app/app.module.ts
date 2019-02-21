@@ -9,16 +9,17 @@ import { AgGridModule } from 'ag-grid-angular';
 import { ButtonRendererComponent } from './renderer/button-renderer/button-renderer.component';
 import { GlobalService } from './shared/global.service';
 import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbDateCustomParserFormatter } from './validators/dateformat';
-
+import { UploadPageComponent } from './upload-page/upload-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     DetailFormComponent,
-    ButtonRendererComponent
+    ButtonRendererComponent,
+    UploadPageComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +27,8 @@ import { NgbDateCustomParserFormatter } from './validators/dateformat';
     HttpClientModule,
     AgGridModule.withComponents([]),
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [GlobalService, { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }],
   entryComponents: [ButtonRendererComponent],
