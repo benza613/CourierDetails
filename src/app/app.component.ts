@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { GlobalService } from './shared/global.service';
 
 @Component({
@@ -10,7 +10,13 @@ import { GlobalService } from './shared/global.service';
 export class AppComponent {
   title = 'CourierDetails';
 
-  constructor(private gs: GlobalService) {
+  constructor(public gs: GlobalService, private cdref: ChangeDetectorRef) {
+  }
+
+  ngAfterContentChecked() {
+
+    this.cdref.detectChanges();
+
   }
 
 }
