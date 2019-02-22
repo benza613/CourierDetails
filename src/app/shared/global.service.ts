@@ -32,7 +32,10 @@ export class GlobalService {
     return {
       rowData: this._courListData.oc_details.filter((x) => x.ocId == ocId),
       oc_checklist: this._courListData.oc_checklist,
-      oc_emplist: this._courListData.oc_emplist
+      oc_emplist: this._courListData.oc_emplist,
+      oc_filesUploaded: this._courListData.oc_filesUploaded,
+      oc_filesCoverLetter: this._courListData.oc_filesCoverLetter,
+      oc_map_index_checklist: this._courListData.oc_map_index_checklist
     }
   }
 

@@ -70,7 +70,7 @@
               <label class="form-check-label" for="ocCLReq">
                 Covering Letter
               </label>
-
+              <span class="badge badge-light float-right">{{getCLCount()}}</span>
             </div>
           </li>
           <li *ngFor="let item of chekLstData" class="list-group-item list-group-item-info">
@@ -80,6 +80,7 @@
               <label class="form-check-label" for="gridCheck{{item.oclId}}">
                 {{item.oclTask}}
               </label>
+              <span class="badge badge-light float-right">{{getFilesCount(item.oclId)}}</span>
             </div>
           </li>
         </ul>

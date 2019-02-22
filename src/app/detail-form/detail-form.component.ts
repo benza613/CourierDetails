@@ -18,6 +18,9 @@ export class DetailFormComponent implements OnInit {
   courierData: CourierType;
   chekLstData: any;
   empLstData: any;
+  filesUploadedData: any;
+  filesCoverLetterData: any;
+  mapChecklistData: any = [];
   id;
 
   constructor(private route: ActivatedRoute,
@@ -36,12 +39,18 @@ export class DetailFormComponent implements OnInit {
     let gvData = this.gs.getCourierDet(this.id);
     this.chekLstData = gvData.oc_checklist;
     this.empLstData = gvData.oc_emplist;
+    this.filesUploadedData = gvData.oc_filesUploaded;
+    this.filesCoverLetterData = gvData.oc_filesCoverLetter;
+
 
     if (this.id != null) {
 
       this.courierData = gvData.rowData[0];
       mDate = moment(this.courierData.ocDate, 'DD/MM/YYYY');
       this.gs.enableNav();
+      this.mapChecklistData = gvData.oc_map_index_checklist;
+
+
     } else {
       this.courierData = new CourierType();
       this.courierData.ocId = "";
@@ -52,6 +61,7 @@ export class DetailFormComponent implements OnInit {
 
     this.patchValuesIntoForm(mDate);
 
+    this.setCheckListValues();
 
     console.log(gvData);
 
@@ -160,5 +170,55 @@ export class DetailFormComponent implements OnInit {
       remark: this.courierData.remark,
       ocCLReq: this.courierData.ocCLReq == "0" ? false : true
     });
+  }
+
+  getFilesCount(_oclId) {
+
+    if (this.id != null) {
+      let arrC = this.filesUploadedData.filter((x) => x.oclId == _oclId && x.ocId == this.id);
+      if (arrC.length > 0)
+        return arrC[0].countFiles;
+      else
+        return "0";
+    } else {
+      return "0";
+
+    }
+  }
+
+  getCLCount() {
+
+    if (this.id != null) {
+      let arrC = this.filesCoverLetterData.filter((x) => x.ocId == this.id);
+      if (arrC.length > 0)
+        return arrC[0].countFiles;
+      else
+        return "0";
+    } else {
+      return "0";
+
+    }
+  }
+
+  setCheckListValues() {
+
+
+    this.chekLstData.forEach(x => {
+      if (this.id != null) {
+        let arrCMap = this.mapChecklistData.filter((y) => y.oclId == x.oclId && y.ocId == this.id);
+        if (arrCMap.length > 0) {
+          x["checked"] = true;
+        } else {
+          x["checked"] = false;
+
+        }
+      } else {
+        x["checked"] = false;
+
+      }
+    });
+
+
+
   }
 }
