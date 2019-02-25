@@ -20,7 +20,10 @@ export class DetailFormComponent implements OnInit {
   empLstData: any;
   filesUploadedData: any;
   filesCoverLetterData: any;
+  tallyJobData: any;
+
   mapChecklistData: any = [];
+  mapJobData: any = [];
   id;
 
   constructor(private route: ActivatedRoute,
@@ -41,6 +44,7 @@ export class DetailFormComponent implements OnInit {
     this.empLstData = gvData.oc_emplist;
     this.filesUploadedData = gvData.oc_filesUploaded;
     this.filesCoverLetterData = gvData.oc_filesCoverLetter;
+    this.tallyJobData = gvData.oc_tallyJobs;
 
 
     if (this.id != null) {
@@ -49,6 +53,7 @@ export class DetailFormComponent implements OnInit {
       mDate = moment(this.courierData.ocDate, 'DD/MM/YYYY');
       this.gs.enableNav();
       this.mapChecklistData = gvData.oc_map_index_checklist;
+      this.mapJobData = gvData.oc_map_index_jobs.filter((x) => x.ocId == this.id);
 
 
     } else {
@@ -220,5 +225,20 @@ export class DetailFormComponent implements OnInit {
 
 
 
+  }
+
+  getJobNoFromID(_jobId) {
+    let arrJ = this.tallyJobData.filter((x) => x.jobId == _jobId);
+    if (arrJ.length > 0) {
+      return arrJ[0].jobNo;
+    }
+    else {
+      return "ID: " + _jobId;
+
+    }
+  }
+
+  openJobMapping() {
+    alert('Open jOb mapping')
   }
 }

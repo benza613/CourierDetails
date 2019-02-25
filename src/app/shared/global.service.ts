@@ -35,7 +35,9 @@ export class GlobalService {
       oc_emplist: this._courListData.oc_emplist,
       oc_filesUploaded: this._courListData.oc_filesUploaded,
       oc_filesCoverLetter: this._courListData.oc_filesCoverLetter,
-      oc_map_index_checklist: this._courListData.oc_map_index_checklist
+      oc_map_index_checklist: this._courListData.oc_map_index_checklist,
+      oc_tallyJobs: this._courListData.oc_tallyJobs,
+      oc_map_index_jobs: this._courListData.oc_map_index_jobs
     }
   }
 

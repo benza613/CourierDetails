@@ -1,106 +1,143 @@
 <form [formGroup]="courierForm" (ngSubmit)="onSubmit()">
   <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="inputEmail4">Date</label>
-      <div class="input-group">
-        <input class="form-control" placeholder="yyyy-mm-dd" formControlName="ocDate" [ngClass]="{ 'is-invalid': submitted && f.ocDate.errors }"
-          name="iDate" ngbDatepicker #d="ngbDatepicker">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
-        </div>
-      </div>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="iCourierName">Courier Name</label>
-      <input type="text" class="form-control" id="iCourierName" formControlName="courier" [ngClass]="{ 'is-invalid': submitted && f.courier.errors }"
-        placeholder="Courier Name">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="iEmpFrom">From Employee</label>
-      <select id="iEmpFrom" class="form-control" formControlName="empFrom" [ngClass]="{ 'is-invalid': submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption }">
-        <option *ngFor="let emp of empLstData" [ngValue]="emp.empId">{{emp.empName}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-3">
-      <label for="inputEmail4">City</label>
-      <input type="text" class="form-control" id="iCity" formControlName="cityTo" [ngClass]="{ 'is-invalid': submitted && f.cityTo.errors }"
-        placeholder="City">
-    </div>
-    <div class="form-group col-md-2">
-      <label for="inputPassword4">Mode</label>
-      <input type="text" class="form-control" id="iMode" formControlName="mode" [ngClass]="{ 'is-invalid': submitted && f.mode.errors }"
-        placeholder="Mode">
-    </div>
-    <div class="form-group col-md-2">
-      <label for="inputPassword4">Place of Delivery</label>
-      <input type="text" class="form-control" id="iPOD" formControlName="pod" [ngClass]="{ 'is-invalid': submitted && f.pod.errors }"
-        placeholder="Place of Delivery">
-    </div>
-    <div class="form-group col-md-5">
-      <label for="inputPassword4">Weight / Units</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <input type="text" class="form-control" id="iWt" formControlName="ocWt" [ngClass]="{ 'is-invalid': submitted && f.ocWt.errors }"
-            placeholder="Weight">
-        </div>
-        <select id="iMode" class="form-control" formControlName="ocWtUM" [ngClass]="{ 'is-invalid': submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption }">
-          <option value="KGS">KGS</option>
-          <option value="TONNES">TONNES</option>
-          <option value="GRAMS">GRAMS</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <div class="form-group">
-        <label for="inputPassword4">Recieved By: </label>
-        <input type="text" class="form-control" id="iMode" placeholder="Recieved by" formControlName="ocRecieve"
-          [ngClass]="{ 'is-invalid': submitted && f.ocRecieve.errors }">
-      </div>
-      <div class="form-group">
-        <label for="docChecklist">Document CheckList: </label>
-
-        <ul id="docChecklist" class="list-group">
-          <li class="list-group-item list-group-item-danger">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" formControlName="ocCLReq" id="ocCLReq">
-              <label class="form-check-label" for="ocCLReq">
-                Covering Letter
-              </label>
-              <span class="badge badge-light float-right">{{getCLCount()}}</span>
+    <div class="col-md-8">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputEmail4">Date</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" formControlName="ocDate" [ngClass]="{ 'is-invalid': submitted && f.ocDate.errors }"
+              name="iDate" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
             </div>
-          </li>
-          <li *ngFor="let item of chekLstData" class="list-group-item list-group-item-info">
-            <div class="form-check">
-              <input class="form-check-input" [(ngModel)]="item.checked" type="checkbox" id="gridCheck{{item.oclId}}"
-                [ngModelOptions]="{standalone: true}">
-              <label class="form-check-label" for="gridCheck{{item.oclId}}">
-                {{item.oclTask}}
-              </label>
-              <span class="badge badge-light float-right">{{getFilesCount(item.oclId)}}</span>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="iCourierName">Courier Name</label>
+          <input type="text" class="form-control" id="iCourierName" formControlName="courier" [ngClass]="{ 'is-invalid': submitted && f.courier.errors }"
+            placeholder="Courier Name">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="iEmpFrom">From Employee</label>
+          <select id="iEmpFrom" class="form-control" formControlName="empFrom" [ngClass]="{ 'is-invalid': submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption }">
+            <option *ngFor="let emp of empLstData" [ngValue]="emp.empId">{{emp.empName}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputEmail4">City</label>
+          <input type="text" class="form-control" id="iCity" formControlName="cityTo" [ngClass]="{ 'is-invalid': submitted && f.cityTo.errors }"
+            placeholder="City">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputPassword4">Mode</label>
+          <input type="text" class="form-control" id="iMode" formControlName="mode" [ngClass]="{ 'is-invalid': submitted && f.mode.errors }"
+            placeholder="Mode">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputPassword4">Place of Delivery</label>
+          <input type="text" class="form-control" id="iPOD" formControlName="pod" [ngClass]="{ 'is-invalid': submitted && f.pod.errors }"
+            placeholder="Place of Delivery">
+        </div>
+
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-7">
+          <label for="inputPassword4">Weight / Units</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <input type="text" class="form-control" id="iWt" formControlName="ocWt" [ngClass]="{ 'is-invalid': submitted && f.ocWt.errors }"
+                placeholder="Weight">
             </div>
-          </li>
-        </ul>
+            <select id="iMode" class="form-control" formControlName="ocWtUM" [ngClass]="{ 'is-invalid': submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption }">
+              <option value="KGS">KGS</option>
+              <option value="TONNES">TONNES</option>
+              <option value="GRAMS">GRAMS</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group col-md-5">
+          <div class="form-group">
+            <label for="inputPassword4">Recieved By: </label>
+            <input type="text" class="form-control" id="iMode" placeholder="Recieved by" formControlName="ocRecieve"
+              [ngClass]="{ 'is-invalid': submitted && f.ocRecieve.errors }">
+          </div>
+
+
+        </div>
       </div>
 
-    </div>
-    <div class="form-group col-md-8">
-      <label for="inputPassword4">Remarks</label>
-      <textarea class="form-control" id="gridCheck" rows="4" formControlName="remark" [ngClass]="{ 'is-invalid': submitted && f.remark.errors }"></textarea>
+      <div class="form-row">
 
-      <div class="form-row mt-5">
-        <div class="form-group col-md-6">
-          <button type="submit" class="btn btn-success btn-block">UPDATE COURIER</button>
-        </div>
-        <div class="form-group col-md-6">
-          <button type="button" class="btn btn-danger btn-block">DELETE</button>
+        <div class="form-group col-md-12">
+          <label for="inputPassword4">Remarks</label>
+          <textarea class="form-control" id="gridCheck" rows="4" formControlName="remark" [ngClass]="{ 'is-invalid': submitted && f.remark.errors }"></textarea>
+
+          <div class="form-row mt-5">
+            <div class="form-group col-md-6">
+              <button type="submit" class="btn btn-success btn-block">UPDATE COURIER</button>
+            </div>
+            <div class="form-group col-md-6">
+              <button type="button" class="btn btn-danger btn-block">DELETE</button>
+            </div>
+
+          </div>
         </div>
 
       </div>
     </div>
+    <div class="col-md-4">
+      <div class="form-row ">
+        <div class="form-group col-md-12">
+          <label for="docChecklist">Document CheckList: </label>
 
+          <ul id="docChecklist" class="list-group">
+            <li class="list-group-item list-group-item-danger">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="ocCLReq" id="ocCLReq">
+                <label class="form-check-label" for="ocCLReq">
+                  Covering Letter
+                </label>
+                <span class="badge badge-light float-right">{{getCLCount()}}</span>
+              </div>
+            </li>
+            <li *ngFor="let item of chekLstData" class="list-group-item list-group-item-info">
+              <div class="form-check">
+                <input class="form-check-input" [(ngModel)]="item.checked" type="checkbox" id="gridCheck{{item.oclId}}"
+                  [ngModelOptions]="{standalone: true}">
+                <label class="form-check-label" for="gridCheck{{item.oclId}}">
+                  {{item.oclTask}}
+                </label>
+                <span class="badge badge-light float-right">{{getFilesCount(item.oclId)}}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="col-md-12" for="JobMapping">Jobs Associated: </label>
+
+        <div class="form-group col-md-12 jobMapScroll">
+          <table id="JobMapping" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th> Job No </th>
+                <th>Action</th>
+                <th><button type="button" class="btn btn-sm btn-danger float-right" (click)="openJobMapping()">Add</button></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of mapJobData">
+                <td>{{getJobNoFromID(row.jobId)}}</td>
+                <td colspan="2"><button type="button" class="btn btn-sm btn-warning">Unlink</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
+
 </form>

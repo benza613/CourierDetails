@@ -12,6 +12,7 @@ import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbDateCustomParserFormatter } from './validators/dateformat';
 import { UploadPageComponent } from './upload-page/upload-page.component';
+import { TallyJobModalComponent } from './shared/tally-job-modal/tally-job-modal.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { UploadPageComponent } from './upload-page/upload-page.component';
     HomeComponent,
     DetailFormComponent,
     ButtonRendererComponent,
-    UploadPageComponent
+    UploadPageComponent,
+    TallyJobModalComponent
   ],
   imports: [
     BrowserModule,

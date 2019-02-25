@@ -21,3 +21,48 @@ label {
 
   }
 }
+
+table#JobMapping {
+  thead tr {
+    th {
+      vertical-align: middle;
+      text-align: center;
+
+    }
+
+    th:nth-child(1) {
+      width: 55%;
+
+    }
+
+    th:nth-child(2) {
+      width: 35%;
+
+    }
+
+    th:nth-child(3) {
+      width: 10%;
+
+    }
+  }
+
+  tbody {
+    tr {
+      td:nth-child(1) {
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      td:nth-child(2) {
+        text-align: center;
+      }
+
+
+    }
+  }
+}
+
+.jobMapScroll {
+  overflow-y: auto;
+  max-height: 300px;
+}
