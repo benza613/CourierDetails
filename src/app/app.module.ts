@@ -13,6 +13,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbDateCustomParserFormatter } from './validators/dateformat';
 import { UploadPageComponent } from './upload-page/upload-page.component';
 import { TallyJobModalComponent } from './shared/tally-job-modal/tally-job-modal.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -30,10 +32,12 @@ import { TallyJobModalComponent } from './shared/tally-job-modal/tally-job-modal
     AgGridModule.withComponents([]),
     NgbModule,
     ReactiveFormsModule,
-    FormsModule
+    NgSelectModule,
+    FormsModule,
+    NgxSpinnerModule
   ],
   providers: [GlobalService, { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }],
-  entryComponents: [ButtonRendererComponent],
+  entryComponents: [ButtonRendererComponent, TallyJobModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

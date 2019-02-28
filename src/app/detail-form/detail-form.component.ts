@@ -6,7 +6,9 @@ import { ValidateSelect } from '../validators/select.validator';
 import * as moment from 'moment';
 import { CourierType } from '../models/CourierType';
 import { HttpService } from '../shared/http.service';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TallyJobModalComponent } from '../shared/tally-job-modal/tally-job-modal.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-detail-form',
   templateUrl: './detail-form.component.html',
@@ -27,8 +29,10 @@ export class DetailFormComponent implements OnInit {
   id;
 
   constructor(private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
     private router: Router, private gs: GlobalService,
-    private formBuilder: FormBuilder, private httpService: HttpService
+    private formBuilder: FormBuilder, private httpService: HttpService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -106,11 +110,14 @@ export class DetailFormComponent implements OnInit {
       }
     });
 
+    this.spinner.show();
     this.httpService.postdata('IU_CourierDetails',
       {
         formData: copy_CForm,
         selectedDocs: selectedDocs
       }).subscribe(r => {
+        this.spinner.hide();
+
         console.log(r);
         if (r.d.errId === '200') {
 
@@ -133,6 +140,8 @@ export class DetailFormComponent implements OnInit {
         }
       },
         err => {
+          this.spinner.hide();
+
           console.log('err', err);
         }
       );
@@ -239,6 +248,47 @@ export class DetailFormComponent implements OnInit {
   }
 
   openJobMapping() {
-    alert('Open jOb mapping')
+    const modalRef = this.modalService.open(TallyJobModalComponent);
+    modalRef.componentInstance.courId = this.id; // should be the id
+
+    let arrJ = JSON.parse(JSON.stringify(this.tallyJobData)); //Es6 deep copy
+
+    for (let idx = 0; idx < this.mapJobData.length; idx++) {
+      const element = this.mapJobData[idx];
+
+      arrJ.map((x) => {
+
+        if (x.jobId == element.jobId)
+          x['disabled'] = true;
+      });
+    }
+
+    modalRef.componentInstance.tallyJobList = arrJ;
+
+    modalRef.result.then((result) => {
+      console.log(result);
+
+      if (result.action == "submit" && result.data.length > 0) {
+
+        this.httpService.postdata('addIndexJobMapping',
+          {
+            tallyJobs: result.data,
+            ocId: this.id
+          }).subscribe(r => {
+            console.log(r);
+            if (r.d.errId === '200') {
+
+            } else {
+              alert(r.d.errMsg);
+            }
+          },
+            err => {
+              console.log('err', err);
+            }
+          );
+      }
+    }).catch((error) => {
+      console.log('dismiss');
+    });
   }
 }
