@@ -5,6 +5,7 @@ import { ButtonRendererComponent } from '../renderer/button-renderer/button-rend
 import { GlobalService } from '../shared/global.service';
 import { AuthService } from '../auth/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as moment from 'moment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -13,6 +14,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class HomeComponent implements OnInit {
   private gridApi;
   frameworkComponents: any;
+
+  inpFromDate;
+  inpToDate;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -56,6 +60,11 @@ export class HomeComponent implements OnInit {
     this.spinner.show();
     this.gs.disableNav();
     this._authService.login();
+
+    let dateService = this.gs.getDetailsRange();
+    console.log(dateService)
+    this.inpFromDate = dateService.from;
+    this.inpToDate = dateService.to;
     this.httpService.postdata('FetchDetails',
       {
         startDate: 'start',
@@ -96,8 +105,28 @@ export class HomeComponent implements OnInit {
     this.router.navigate([myurl]);
   }
 
+  public fetchNewDetails() {
+    console.log(this.inpFromDate);
+    console.log(this.inpToDate);
+  }
+
   public addDetailsForm() {
     let myurl = `/CD.aspx/details/`;
     this.router.navigate([myurl]);
+  }
+
+  public onModelChange_From($event) {
+    console.log(this.DateObjToSqlString(this.inpFromDate));
+    this.gs.updateFromDate($event);
+  }
+
+  public onModelChange_To($event) {
+    console.log(this.DateObjToSqlString(this.inpToDate));
+    this.gs.updateToDate($event);
+
+  }
+
+  private DateObjToSqlString(dateObj) {
+    return moment().year(dateObj.year).month(dateObj.month - 1).date(dateObj.day).format("DD/MM/YYYY");
   }
 }

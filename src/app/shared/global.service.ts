@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { DateType } from '../models/date-type.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,9 @@ export class GlobalService {
   _navFSFrame = true;
 
   _currentCourierId;
+
+  private _details_FromDate: DateType;
+  private _details_ToDate: DateType;
 
   constructor() {
 
@@ -41,6 +46,35 @@ export class GlobalService {
     }
   }
 
+
+  setDetailsRange_Initial(today: any) {
+    console.log('today',today.year())
+    console.log('today mnth',today.month())
+    this._details_FromDate = {
+      year: today.year(),
+      month: today.month(),
+      day: today.date()
+    }
+
+    //add 1 since moment months are from 0-11
+    this._details_ToDate = {
+      year: today.year(),
+      month: today.month() + 1,
+      day: today.date()
+    }
+
+    console.log("Date Set");
+
+  }
+
+  getDetailsRange() {
+    return {
+      from: this._details_FromDate,
+      to: this._details_ToDate
+
+    }
+  }
+
   getCurrentCourId() {
     return this._currentCourierId;
   }
@@ -57,6 +91,20 @@ export class GlobalService {
   disableNav() {
     this._navFSFrame = true;
     return true;
+  }
+
+  updateFromDate(newDate: any) {
+    this._details_FromDate = {
+      year: newDate.year,
+      month: newDate.month,
+      day: newDate.day
+    }
+  }
+
+  updateToDate(newDate: any) {
+    this._details_ToDate.year = newDate.year;
+    this._details_ToDate.month = newDate.month;
+    this._details_ToDate.day = newDate.day;
   }
 
 }

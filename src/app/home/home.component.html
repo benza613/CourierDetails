@@ -1,8 +1,24 @@
 <!-- <ngx-spinner size="default" type="ball-spin-clockwise"> Loading... -->
 <ngx-spinner size="default" type="line-scale-pulse-out-rapid"> Loading...
 </ngx-spinner>
-<div class="col-md-3">
-  <button type="button" class="btn btn-success btn-block" (click)="addDetailsForm()">ADD NEW COURIER</button>
+<div class="form-row">
+  <div class="col-md-5">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="From Date" name="iDate" ngbDatepicker #d1="ngbDatepicker"
+        (click)="d1.toggle()" autocomplete="off" [(ngModel)]="inpFromDate" (ngModelChange)="onModelChange_From($event)">
+      <div class="input-group-prepend input-group-append">
+        <div class="input-group-text"> - </div>
+      </div>
+      <input type="text" class="form-control" placeholder="To Date" name="iDate" ngbDatepicker #d2="ngbDatepicker"
+        (click)="d2.toggle()" autocomplete="off" [(ngModel)]="inpToDate" (ngModelChange)="onModelChange_To($event)">
+    </div>
+  </div>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-primary btn-block" (click)="fetchNewDetails()">FETCH DETAILS</button>
+  </div>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-success btn-block" (click)="addDetailsForm()">ADD NEW COURIER</button>
+  </div>
 </div>
 <br />
 <ag-grid-angular class="ag-theme-balham ag-cust" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
