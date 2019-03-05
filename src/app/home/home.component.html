@@ -1,8 +1,8 @@
 <!-- <ngx-spinner size="default" type="ball-spin-clockwise"> Loading... -->
 <ngx-spinner size="default" type="line-scale-pulse-out-rapid"> Loading...
 </ngx-spinner>
-<div class="form-row">
-  <div class="col-md-5">
+<div class="form-row details-menu">
+  <div class="col-md-4">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="From Date" name="iDate" ngbDatepicker #d1="ngbDatepicker"
         (click)="d1.toggle()" autocomplete="off" [(ngModel)]="inpFromDate" (ngModelChange)="onModelChange_From($event)">
@@ -13,7 +13,12 @@
         (click)="d2.toggle()" autocomplete="off" [(ngModel)]="inpToDate" (ngModelChange)="onModelChange_To($event)">
     </div>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
+    <ng-select id="iOCStatus" [items]="statusList" [closeOnSelect]="true" bindLabel="stName"
+      placeholder="Select Type" [(ngModel)]="selectedStatus">
+    </ng-select>
+  </div>
+  <div class="col-md-2">
     <button type="button" class="btn btn-primary btn-block" (click)="fetchNewDetails()">FETCH DETAILS</button>
   </div>
   <div class="col-md-3">
@@ -21,6 +26,6 @@
   </div>
 </div>
 <br />
-<ag-grid-angular class="ag-theme-balham ag-cust" [rowData]="rowData" [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
-  [frameworkComponents]="frameworkComponents">
+<ag-grid-angular class="ag-theme-balham ag-cust" [rowData]="rowData" [columnDefs]="columnDefs" [rowClassRules]="rowClassRules"
+  (gridReady)="onGridReady($event)" [frameworkComponents]="frameworkComponents">
 </ag-grid-angular>

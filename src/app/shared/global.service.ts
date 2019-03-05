@@ -48,8 +48,8 @@ export class GlobalService {
 
 
   setDetailsRange_Initial(today: any) {
-    console.log('today',today.year())
-    console.log('today mnth',today.month())
+    console.log('today', today.year())
+    console.log('today mnth', today.month())
     this._details_FromDate = {
       year: today.year(),
       month: today.month(),
@@ -105,6 +105,40 @@ export class GlobalService {
     this._details_ToDate.year = newDate.year;
     this._details_ToDate.month = newDate.month;
     this._details_ToDate.day = newDate.day;
+  }
+
+  removeJobMapping(objJob) {
+    let ix = this._courListData.oc_map_index_jobs.indexOf(objJob);
+    this._courListData.oc_map_index_jobs.splice(ix, 1);
+  }
+
+  addJobMapping(objJob) {
+    this._courListData.oc_map_index_jobs.push(objJob);
+  }
+
+  updateCourier_Checklist(objCl, resId, newStatus) {
+    this._courListData.oc_map_index_checklist;
+
+    //update
+    if (resId == "1") {
+      this._courListData.oc_map_index_checklist.forEach(x => {
+        if (x.ocId == objCl.ocId && x.oclId == objCl.oclId) {
+          x.oclStatus = newStatus;
+        }
+      });
+    } else {
+      //add new 
+      this._courListData.oc_map_index_checklist.push({
+        ocId: objCl.ocId,
+        oclId: objCl.oclId,
+        oclStatus: newStatus
+      })
+    }
+
+    return {
+      oc_checklist: this._courListData.oc_checklist,
+      oc_map_index_checklist: this._courListData.oc_map_index_checklist,
+    }
   }
 
 }

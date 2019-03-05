@@ -220,19 +220,22 @@ export class DetailFormComponent implements OnInit {
     this.chekLstData.forEach(x => {
       if (this.id != null) {
         let arrCMap = this.mapChecklistData.filter((y) => y.oclId == x.oclId && y.ocId == this.id);
+
         if (arrCMap.length > 0) {
           x["checked"] = true;
+          x["oclStatus"] = arrCMap[0].oclStatus;
         } else {
           x["checked"] = false;
-
+          x["oclStatus"] = "PENDING";
         }
       } else {
         x["checked"] = false;
+        x["oclStatus"] = "NOT VALID";
 
       }
     });
 
-
+    console.log(this.chekLstData);
 
   }
 
@@ -248,47 +251,126 @@ export class DetailFormComponent implements OnInit {
   }
 
   openJobMapping() {
-    const modalRef = this.modalService.open(TallyJobModalComponent);
-    modalRef.componentInstance.courId = this.id; // should be the id
+    if (this.id != null) {
+      const modalRef = this.modalService.open(TallyJobModalComponent);
+      modalRef.componentInstance.courId = this.id; // should be the id
 
-    let arrJ = JSON.parse(JSON.stringify(this.tallyJobData)); //Es6 deep copy
+      let arrJ = JSON.parse(JSON.stringify(this.tallyJobData)); //Es6 deep copy
 
-    for (let idx = 0; idx < this.mapJobData.length; idx++) {
-      const element = this.mapJobData[idx];
+      for (let idx = 0; idx < this.mapJobData.length; idx++) {
+        const element = this.mapJobData[idx];
 
-      arrJ.map((x) => {
+        arrJ.map((x) => {
 
-        if (x.jobId == element.jobId)
-          x['disabled'] = true;
-      });
-    }
-
-    modalRef.componentInstance.tallyJobList = arrJ;
-
-    modalRef.result.then((result) => {
-      console.log(result);
-
-      if (result.action == "submit" && result.data.length > 0) {
-
-        this.httpService.postdata('addIndexJobMapping',
-          {
-            tallyJobs: result.data,
-            ocId: this.id
-          }).subscribe(r => {
-            console.log(r);
-            if (r.d.errId === '200') {
-
-            } else {
-              alert(r.d.errMsg);
-            }
-          },
-            err => {
-              console.log('err', err);
-            }
-          );
+          if (x.jobId == element.jobId)
+            x['disabled'] = true;
+        });
       }
-    }).catch((error) => {
-      console.log('dismiss');
-    });
+
+      modalRef.componentInstance.tallyJobList = arrJ;
+
+      modalRef.result.then((result) => {
+        console.log(result);
+
+        if (result.action == "submit" && result.data.length > 0) {
+
+          this.httpService.postdata('addIndexJobMapping',
+            {
+              tallyJobs: result.data,
+              ocId: this.id
+            }).subscribe(r => {
+              console.log(r);
+              if (r.d.errId === '200') {
+                //TO DO 
+
+                for (let idx_j = 0; idx_j < result.data.length; idx_j++) {
+                  const o = result.data[idx_j];
+
+                  let objMap_idx_job = {
+                    ocId: this.id,
+                    jobId: o.jobId
+                  };
+                  this.mapJobData.push(objMap_idx_job);
+                  this.gs.addJobMapping(objMap_idx_job);
+                }
+                alert(r.d.resMsg);
+
+              } else {
+                alert(r.d.errMsg);
+              }
+
+            },
+              err => {
+                console.log('err', err);
+              }
+            );
+        }
+      }).catch((error) => {
+        console.log('dismiss');
+      });
+
+    } else {
+      alert('Please Save this Courier Detail First');
+    }
+  }
+
+  unlinkJobMapping(objJob) {
+    console.log(objJob);
+    this.httpService.postdata('unlinkJob',
+      {
+        jobId: objJob.jobId,
+        ocId: objJob.ocId
+      }).subscribe(r => {
+        console.log(r);
+        if (r.d.errId === '200') {
+          //TO DO 
+
+          let ix = this.mapJobData.indexOf(objJob);
+          this.mapJobData.splice(ix, 1);
+
+          this.gs.removeJobMapping(objJob);
+          alert(r.d.resMsg);
+        } else {
+          alert(r.d.errMsg);
+        }
+      },
+        err => {
+          console.log('err', err);
+        }
+      );
+  }
+
+  updateCheckListStatus(item) {
+    if (this.id != null) {
+      this.spinner.show();
+
+      let clObj = {
+        ocId: this.id,
+        oclId: item.oclId,
+        oclStatus: item.oclStatus
+      };
+
+      this.httpService.postdata('updateCheckListStatus', clObj)
+        .subscribe(r => {
+          console.log(r);
+          if (r.d.errId === '200') {
+
+            let refreshedChkLstData = this.gs.updateCourier_Checklist(clObj, r.d.resId, r.d.misc[0]);
+            this.chekLstData = refreshedChkLstData.oc_checklist;
+            this.mapChecklistData = refreshedChkLstData.oc_map_index_checklist;
+            this.setCheckListValues();
+            this.spinner.hide();
+
+            alert(r.d.resMsg);
+          } else {
+            alert(r.d.errMsg);
+          }
+        },
+          err => {
+            console.log('err', err);
+          }
+        );
+
+    }
   }
 }

@@ -111,6 +111,10 @@
                 <label class="form-check-label" for="gridCheck{{item.oclId}}">
                   {{item.oclTask}}
                 </label>
+                <button type="button" *ngIf="item.checked == true" 
+                class="btn btn-xs float-right statusChecklist" 
+                [ngClass]="{'COMPLETE':'btn-success','PENDING':'btn-danger'}[item.oclStatus]"
+                (click)="updateCheckListStatus(item)">{{item.oclStatus}}</button>
                 <span class="badge badge-light float-right">{{getFilesCount(item.oclId)}}</span>
               </div>
             </li>
@@ -133,7 +137,7 @@
             <tbody>
               <tr *ngFor="let row of mapJobData">
                 <td>{{getJobNoFromID(row.jobId)}}</td>
-                <td colspan="2"><button type="button" class="btn btn-sm btn-warning">Unlink</button></td>
+                <td colspan="2"><button type="button" class="btn btn-sm btn-warning" (click)="unlinkJobMapping(row)">Unlink</button></td>
               </tr>
             </tbody>
           </table>

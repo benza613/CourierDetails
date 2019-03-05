@@ -13,10 +13,14 @@ import * as moment from 'moment';
 })
 export class HomeComponent implements OnInit {
   private gridApi;
+  public rowClassRules;
   frameworkComponents: any;
+
+  _map_idx_chklist;
 
   inpFromDate;
   inpToDate;
+  selectedStatus = { stId: "1", stName: "PENDING" };
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -25,6 +29,21 @@ export class HomeComponent implements OnInit {
     private _authService: AuthService) {
     this.frameworkComponents = {
       buttonRenderer: ButtonRendererComponent
+    };
+    let that = this;
+
+    this.rowClassRules = {
+      "courier-pending": function (params) {
+
+        var ocId = params.data.ocId;
+        console.log(ocId)
+        return that.ValidateCourierPending(ocId);
+      },
+      "courier-complete": function (params) {
+
+        var ocId = params.data.ocId;
+        return that.ValidateCourierComplete(ocId);
+      },
     };
   }
   currentData;
@@ -53,8 +72,13 @@ export class HomeComponent implements OnInit {
     }
   ];
 
+  rowData = [];
 
-  rowData = [{}, {}, {}];
+  statusList = [
+    { stId: "1", stName: "PENDING" },
+    { stId: "2", stName: "COMPLETE" },
+    { stId: "3", stName: "ALL" }
+  ];
 
   ngOnInit() {
     this.spinner.show();
@@ -62,29 +86,10 @@ export class HomeComponent implements OnInit {
     this._authService.login();
 
     let dateService = this.gs.getDetailsRange();
-    console.log(dateService)
     this.inpFromDate = dateService.from;
     this.inpToDate = dateService.to;
-    this.httpService.postdata('FetchDetails',
-      {
-        startDate: 'start',
-        endDate: 'end1'
-      }).subscribe(r => {
-        this.spinner.hide();
-        if (r.d.errId === '200') {
-          this.rowData = r.d.oc_details;
-          console.log(r.d);
-          this.gs.setGV_CourierData(r.d);
-        } else {
-          alert(r.d.errMsg);
-        }
-        this.gridApi.sizeColumnsToFit();
-      },
-        err => {
-          alert('Error Occurred. Please Check Console');
-          console.log('err', err);
-        }
-      );
+
+    this.fetchNewDetails();
   }
 
   onGridReady(params) {
@@ -106,8 +111,31 @@ export class HomeComponent implements OnInit {
   }
 
   public fetchNewDetails() {
-    console.log(this.inpFromDate);
-    console.log(this.inpToDate);
+    this.spinner.show();
+
+    this.httpService.postdata('FetchDetails',
+      {
+        startDate: this.DateObjToSqlString(this.inpFromDate),
+        endDate: this.DateObjToSqlString(this.inpToDate),
+        selectedStatus: this.selectedStatus.stId
+      }).subscribe(r => {
+        this.spinner.hide();
+        if (r.d.errId === '200') {
+          this.rowData = r.d.oc_details;
+          console.log(r.d);
+          this.gs.setGV_CourierData(r.d);
+
+          this._map_idx_chklist = r.d.oc_map_index_checklist;
+        } else {
+          alert(r.d.errMsg);
+        }
+        this.gridApi.sizeColumnsToFit();
+      },
+        err => {
+          alert('Error Occurred. Please Check Console');
+          console.log('err', err);
+        }
+      );
   }
 
   public addDetailsForm() {
@@ -116,17 +144,57 @@ export class HomeComponent implements OnInit {
   }
 
   public onModelChange_From($event) {
-    console.log(this.DateObjToSqlString(this.inpFromDate));
+
     this.gs.updateFromDate($event);
   }
 
   public onModelChange_To($event) {
-    console.log(this.DateObjToSqlString(this.inpToDate));
+
     this.gs.updateToDate($event);
 
   }
 
   private DateObjToSqlString(dateObj) {
-    return moment().year(dateObj.year).month(dateObj.month - 1).date(dateObj.day).format("DD/MM/YYYY");
+    return moment().year(dateObj.year).month(dateObj.month - 1).date(dateObj.day).format("YYYY/MM/DD");
+  }
+
+  public ValidateCourierPending(ocId: any) {
+    //type 1-> pending 2->complete 
+    let arr = this._map_idx_chklist.filter(x => x.ocId == ocId);
+
+    if (arr.length == 0) {
+      return true;
+    } else {
+      let res = false;
+      for (let ix = 0; ix < arr.length; ix++) {
+        const e = arr[ix];
+        if (e.oclStatus == "PENDING") {
+          res = true;
+          break;
+        }
+      }
+
+      return res;
+    }
+  }
+
+  public ValidateCourierComplete(ocId: any) {
+    //type 1-> pending 2->complete 
+    let arr = this._map_idx_chklist.filter(x => x.ocId == ocId);
+
+    if (arr.length == 0) {
+      return false;
+    } else {
+      let res = true;
+      for (let ix = 0; ix < arr.length; ix++) {
+        const e = arr[ix];
+        if (e.oclStatus == "PENDING") {
+          res = false;
+          break;
+        }
+      }
+
+      return res;
+    }
   }
 }
