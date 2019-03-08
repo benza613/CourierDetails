@@ -6,6 +6,9 @@ import { GlobalService } from '../shared/global.service';
 import { AuthService } from '../auth/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FilterJobModalComponent } from '../shared/filter-job-modal/filter-job-modal.component';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -21,12 +24,13 @@ export class HomeComponent implements OnInit {
   inpFromDate;
   inpToDate;
   selectedStatus = { stId: "1", stName: "PENDING" };
-
+  selectedJob;
   constructor(
     private spinner: NgxSpinnerService,
     private httpService: HttpService,
     private router: Router, private gs: GlobalService,
-    private _authService: AuthService) {
+    private _authService: AuthService,
+    private modalService: NgbModal) {
     this.frameworkComponents = {
       buttonRenderer: ButtonRendererComponent
     };
@@ -36,7 +40,6 @@ export class HomeComponent implements OnInit {
       "courier-pending": function (params) {
 
         var ocId = params.data.ocId;
-        console.log(ocId)
         return that.ValidateCourierPending(ocId);
       },
       "courier-complete": function (params) {
@@ -71,14 +74,19 @@ export class HomeComponent implements OnInit {
       pinned: 'right'
     }
   ];
-
+  //12.17 c.op
+  //16.16 c.op
+  //17.36 c.op
+  //18.27 c.op
   rowData = [];
 
+  jobList = [];
   statusList = [
     { stId: "1", stName: "PENDING" },
     { stId: "2", stName: "COMPLETE" },
     { stId: "3", stName: "ALL" }
   ];
+
 
   ngOnInit() {
     this.spinner.show();
@@ -89,6 +97,7 @@ export class HomeComponent implements OnInit {
     this.inpFromDate = dateService.from;
     this.inpToDate = dateService.to;
 
+    this.jobList = this.gs.getFilteredJobData();
     this.fetchNewDetails();
   }
 
@@ -111,31 +120,38 @@ export class HomeComponent implements OnInit {
   }
 
   public fetchNewDetails() {
-    this.spinner.show();
 
-    this.httpService.postdata('FetchDetails',
-      {
-        startDate: this.DateObjToSqlString(this.inpFromDate),
-        endDate: this.DateObjToSqlString(this.inpToDate),
-        selectedStatus: this.selectedStatus.stId
-      }).subscribe(r => {
-        this.spinner.hide();
-        if (r.d.errId === '200') {
-          this.rowData = r.d.oc_details;
-          console.log(r.d);
-          this.gs.setGV_CourierData(r.d);
+    if (this.selectedStatus != null) {
+      this.spinner.show();
 
-          this._map_idx_chklist = r.d.oc_map_index_checklist;
-        } else {
-          alert(r.d.errMsg);
-        }
-        this.gridApi.sizeColumnsToFit();
-      },
-        err => {
-          alert('Error Occurred. Please Check Console');
-          console.log('err', err);
-        }
-      );
+      this.httpService.postdata('FetchDetails',
+        {
+          startDate: this.DateObjToSqlString(this.inpFromDate),
+          endDate: this.DateObjToSqlString(this.inpToDate),
+          selectedStatus: this.selectedStatus.stId,
+          selectedJob: (this.selectedJob == null || this.selectedJob == undefined) ? "0" : this.selectedJob.jobId
+        }).subscribe(r => {
+          this.spinner.hide();
+          if (r.d.errId === '200') {
+            this.rowData = r.d.oc_details;
+            console.log(r.d);
+            this.gs.setGV_CourierData(r.d);
+
+            this._map_idx_chklist = r.d.oc_map_index_checklist;
+          } else {
+            alert(r.d.errMsg);
+          }
+          this.gridApi.sizeColumnsToFit();
+        },
+          err => {
+            alert('Error Occurred. Please Check Console');
+            console.log('err', err);
+          }
+        );
+
+    } else {
+      alert('Please Select Status of Courier Details to Fetch');
+    }
   }
 
   public addDetailsForm() {
@@ -196,5 +212,46 @@ export class HomeComponent implements OnInit {
 
       return res;
     }
+  }
+
+  refreshJobList() {
+    const modalRef = this.modalService.open(FilterJobModalComponent);
+
+    modalRef.componentInstance.jobFromDate = this.gs.getJobFilterFrom(); // should be the id
+    modalRef.componentInstance.jobToDate = this.gs.getJobFilterTo(); // should be the id
+
+    modalRef.result.then((result) => {
+
+      if (result.action == "submit") {
+
+        this.spinner.show();
+
+        this.httpService.postdata('FetchFilterJobsList',
+          {
+            startDate: this.DateObjToSqlString(result.data.from),
+            endDate: this.DateObjToSqlString(result.data.to),
+          }).subscribe(
+            r => {
+              this.spinner.hide();
+              if (r.d.errId === '200') {
+                console.log(r.d);
+                if (r.d.resId == "1") {
+                  this.gs.setGV_FilterJobData(r.d.filteredJobList, result.data);
+                  this.jobList = this.gs.getFilteredJobData();
+                }
+              } else {
+                alert(r.d.errMsg);
+              }
+              this.gridApi.sizeColumnsToFit();
+            },
+            err => {
+              alert('Error Occurred. Please Check Console');
+              console.log('err', err);
+            }
+          );
+      }
+    }).catch((error) => {
+      console.log('dismiss');
+    });
   }
 }

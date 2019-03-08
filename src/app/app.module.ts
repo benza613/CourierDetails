@@ -15,6 +15,7 @@ import { UploadPageComponent } from './upload-page/upload-page.component';
 import { TallyJobModalComponent } from './shared/tally-job-modal/tally-job-modal.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { FilterJobModalComponent } from './shared/filter-job-modal/filter-job-modal.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     DetailFormComponent,
     ButtonRendererComponent,
     UploadPageComponent,
-    TallyJobModalComponent
+    TallyJobModalComponent,
+    FilterJobModalComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgxSpinnerModule
   ],
   providers: [GlobalService, { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }],
-  entryComponents: [ButtonRendererComponent, TallyJobModalComponent],
+  entryComponents: [ButtonRendererComponent, TallyJobModalComponent, FilterJobModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

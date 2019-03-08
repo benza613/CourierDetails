@@ -15,6 +15,10 @@ export class GlobalService {
   private _details_FromDate: DateType;
   private _details_ToDate: DateType;
 
+  private _jobfilter_FromDate: DateType;
+  private _jobfilter_ToDate: DateType;
+
+  private _jobfilter_Data: any = [];
   constructor() {
 
 
@@ -48,8 +52,6 @@ export class GlobalService {
 
 
   setDetailsRange_Initial(today: any) {
-    console.log('today', today.year())
-    console.log('today mnth', today.month())
     this._details_FromDate = {
       year: today.year(),
       month: today.month(),
@@ -58,6 +60,19 @@ export class GlobalService {
 
     //add 1 since moment months are from 0-11
     this._details_ToDate = {
+      year: today.year(),
+      month: today.month() + 1,
+      day: today.date()
+    }
+
+    this._jobfilter_FromDate = {
+      year: today.year(),
+      month: today.month(),
+      day: today.date()
+    }
+
+    //add 1 since moment months are from 0-11
+    this._jobfilter_ToDate = {
       year: today.year(),
       month: today.month() + 1,
       day: today.date()
@@ -141,4 +156,22 @@ export class GlobalService {
     }
   }
 
+  getJobFilterFrom() {
+    return this._jobfilter_FromDate;
+  }
+
+  getJobFilterTo() {
+    return this._jobfilter_ToDate;
+  }
+
+  setGV_FilterJobData(data, rangeData) {
+    this._jobfilter_Data = data;
+
+    this._jobfilter_FromDate = rangeData.from;
+    this._jobfilter_ToDate = rangeData.to;
+  }
+
+  getFilteredJobData() {
+    return this._jobfilter_Data;
+  }
 }

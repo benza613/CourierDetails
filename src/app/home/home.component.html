@@ -14,14 +14,26 @@
     </div>
   </div>
   <div class="col-md-2">
-    <ng-select id="iOCStatus" [items]="statusList" [closeOnSelect]="true" bindLabel="stName"
-      placeholder="Select Type" [(ngModel)]="selectedStatus">
+    <ng-select id="iOCStatus" [items]="statusList" [closeOnSelect]="true" bindLabel="stName" placeholder="Select Type"
+      [(ngModel)]="selectedStatus">
     </ng-select>
+  </div>
+  <div class="col-md-2">
+
+
+    <div class="input-group mb-3">
+      <ng-select id="iOCJob" class="tester1" [items]="jobList" [closeOnSelect]="true" bindLabel="jobNo" placeholder="Select Job"
+        [(ngModel)]="selectedJob">
+      </ng-select>
+      <div class="input-group-append">
+        <button type="button" class="btn btn-sm btn-success fa fa-refresh" title="Refresh JobList" (click)="refreshJobList()">{{label}}</button>
+      </div>
+    </div>
   </div>
   <div class="col-md-2">
     <button type="button" class="btn btn-primary btn-block" (click)="fetchNewDetails()">FETCH DETAILS</button>
   </div>
-  <div class="col-md-3">
+  <div class="col-md-2">
     <button type="button" class="btn btn-success btn-block" (click)="addDetailsForm()">ADD NEW COURIER</button>
   </div>
 </div>
