@@ -26,7 +26,7 @@ export class DetailFormComponent implements OnInit {
 
   mapChecklistData: any = [];
   mapJobData: any = [];
-  id;
+  id; cr_status;
 
   constructor(private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
@@ -44,6 +44,8 @@ export class DetailFormComponent implements OnInit {
 
     let mDate;
     let gvData = this.gs.getCourierDet(this.id);
+    this.cr_status = gvData.rowData[0].ocStatus;
+    console.log("RowData 1:", this.cr_status);
     this.chekLstData = gvData.oc_checklist;
     this.empLstData = gvData.oc_emplist;
     this.filesUploadedData = gvData.oc_filesUploaded;
@@ -95,6 +97,7 @@ export class DetailFormComponent implements OnInit {
 
     //ES6 spread operator
     const copy_CForm = { ...this.courierForm.value }
+  
     //format date
     let inValidDateObj = copy_CForm.ocDate;
     let x = moment().year(inValidDateObj.year).month(inValidDateObj.month - 1).date(inValidDateObj.day);
@@ -373,4 +376,29 @@ export class DetailFormComponent implements OnInit {
 
     }
   }
+
+  delCourierData() {
+    if (this.id != null)  {
+     // alert('Deleted ID :' + this.id);
+      this.httpService.postdata('delCourierData',
+      {
+        ocId: this.id
+      }).subscribe(r => {
+        console.log(r);
+        if (r.d.errId === '200') {
+           alert(r.d.resMsg);
+           let myurl = `/CD.aspx/`;
+           this.router.navigate([myurl]);
+        } else {
+          alert(r.d.errMsg);
+        }
+      },
+        err => {
+          console.log('err', err);
+        }
+      );
+    }
+   }
+
+
 }

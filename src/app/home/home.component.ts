@@ -43,9 +43,12 @@ export class HomeComponent implements OnInit {
         return that.ValidateCourierPending(ocId);
       },
       "courier-complete": function (params) {
-
         var ocId = params.data.ocId;
         return that.ValidateCourierComplete(ocId);
+      },
+      "courier-cancel": function (params) {
+        var ocId = params.data.ocId;
+        return that.ValidateCourierCancel(ocId);
       },
     };
   }
@@ -84,7 +87,8 @@ export class HomeComponent implements OnInit {
   statusList = [
     { stId: "1", stName: "PENDING" },
     { stId: "2", stName: "COMPLETE" },
-    { stId: "3", stName: "ALL" }
+    { stId: "3", stName: "ALL" },
+    { stId: "4", stName: "CANCEL" }
   ];
 
 
@@ -195,7 +199,7 @@ export class HomeComponent implements OnInit {
   }
 
   public ValidateCourierComplete(ocId: any) {
-    //type 1-> pending 2->complete 
+    //type 1-> pending 2->complete
     let arr = this._map_idx_chklist.filter(x => x.ocId == ocId);
 
     if (arr.length == 0) {
@@ -206,6 +210,25 @@ export class HomeComponent implements OnInit {
         const e = arr[ix];
         if (e.oclStatus == "PENDING") {
           res = false;
+          break;
+        }
+      }
+
+      return res;
+    }
+  }
+  
+  public ValidateCourierCancel(ocId: any) {
+    //type 1-> pending 2->complete
+    let arr = this.rowData.filter(x => x.ocId == ocId);
+    if (arr.length == 0) {
+      return true;
+    } else {
+      let res = false;
+      for (let ix = 0; ix < arr.length; ix++) {
+        const e = arr[ix];
+        if (e.ocStatus == "1") {
+          res = true;
           break;
         }
       }

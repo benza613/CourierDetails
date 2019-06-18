@@ -78,12 +78,11 @@
 
           <div class="form-row mt-5">
             <div class="form-group col-md-6">
-              <button type="submit" class="btn btn-success btn-block">UPDATE COURIER</button>
+              <button type="submit" class="btn btn-success btn-block" [disabled]="cr_status == '1'">UPDATE COURIER</button>
             </div>
             <div class="form-group col-md-6">
-              <button type="button" class="btn btn-danger btn-block">DELETE</button>
+              <button type="button"  [disabled]="cr_status == '1'" class="btn btn-danger btn-block" (click)="delCourierData()">CANCEL</button>
             </div>
-
           </div>
         </div>
 
