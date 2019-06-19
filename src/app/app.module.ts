@@ -17,6 +17,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { FilterJobModalComponent } from './shared/filter-job-modal/filter-job-modal.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,8 @@ import { FilterJobModalComponent } from './shared/filter-job-modal/filter-job-mo
     ButtonRendererComponent,
     UploadPageComponent,
     TallyJobModalComponent,
-    FilterJobModalComponent
+    FilterJobModalComponent,
+
   ],
   imports: [
     BrowserModule,

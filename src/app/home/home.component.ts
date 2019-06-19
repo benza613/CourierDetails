@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   private gridApi;
   public rowClassRules;
   frameworkComponents: any;
-
+  _get_emp_dtlist;
   _map_idx_chklist;
 
   inpFromDate;
@@ -32,7 +32,8 @@ export class HomeComponent implements OnInit {
     private _authService: AuthService,
     private modalService: NgbModal) {
     this.frameworkComponents = {
-      buttonRenderer: ButtonRendererComponent
+      buttonRenderer: ButtonRendererComponent,
+     // deltaIndicator : deltaIndicator,
     };
     let that = this;
 
@@ -52,13 +53,31 @@ export class HomeComponent implements OnInit {
       },
     };
   }
+  // deltaIndicator () {
+  //   console.log("this._get_emp_dtlist:", this.get_emp_dtlist);
+  //  //  console.log(params);
+  //   return null;
+  // }
   currentData;
 
   columnDefs = [
     { headerName: 'ID', field: 'ocId' },
     { headerName: 'Date', field: 'ocDate' },
     { headerName: 'Courier', field: 'courier' },
-    { headerName: 'From Emp', field: 'empFrom' },
+    {
+      headerName: 'From Emp',
+      field: 'empFrom',
+     valueFormatter: function(params) {
+    //  console.log("params.empFrom:", that._get_emp_dtlist);
+        let arr = that._get_emp_dtlist.filter(x => x.empId ==  params.data.empFrom);
+          console.log("arr:",arr);
+         if (arr.length == 0) {
+          return null; y
+        } else {
+        return arr[0].empName;
+        }
+      },
+    },
     { headerName: 'To City', field: 'cityTo' },
     { headerName: 'Mode', field: 'mode' },
     { headerName: 'POD', field: 'pod' },
@@ -90,7 +109,6 @@ export class HomeComponent implements OnInit {
     { stId: "3", stName: "ALL" },
     { stId: "4", stName: "CANCEL" }
   ];
-
 
   ngOnInit() {
     this.spinner.show();
@@ -138,6 +156,9 @@ export class HomeComponent implements OnInit {
           this.spinner.hide();
           if (r.d.errId === '200') {
             this.rowData = r.d.oc_details;
+            this._get_emp_dtlist = r.d.oc_emplist;
+            console.log("this._get_emp_dtlist:", this._get_emp_dtlist);
+
             console.log(r.d);
             this.gs.setGV_CourierData(r.d);
 
@@ -217,7 +238,7 @@ export class HomeComponent implements OnInit {
       return res;
     }
   }
-  
+
   public ValidateCourierCancel(ocId: any) {
     //type 1-> pending 2->complete
     let arr = this.rowData.filter(x => x.ocId == ocId);

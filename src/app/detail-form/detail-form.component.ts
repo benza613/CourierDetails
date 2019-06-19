@@ -51,9 +51,7 @@ export class DetailFormComponent implements OnInit {
     this.filesUploadedData = gvData.oc_filesUploaded;
     this.filesCoverLetterData = gvData.oc_filesCoverLetter;
     this.tallyJobData = gvData.oc_tallyJobs;
-
-
-    if (this.id != null) {
+      if (this.id != null) {
 
       this.courierData = gvData.rowData[0];
       mDate = moment(this.courierData.ocDate, 'DD/MM/YYYY');
@@ -76,6 +74,9 @@ export class DetailFormComponent implements OnInit {
 
     console.log(gvData);
 
+    if (this.cr_status == "1" ) {
+      this.gs.disableNav();
+     }
 
 
   }
@@ -377,11 +378,12 @@ export class DetailFormComponent implements OnInit {
     }
   }
 
-  delCourierData() {
+  delCourierData(item) {
+    console.log('Deleted Status :', item);
     if (this.id != null)  {
-     // alert('Deleted ID :' + this.id);
       this.httpService.postdata('delCourierData',
       {
+        cr_st_id : item,
         ocId: this.id
       }).subscribe(r => {
         console.log(r);

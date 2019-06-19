@@ -81,7 +81,9 @@
               <button type="submit" class="btn btn-success btn-block" [disabled]="cr_status == '1'">UPDATE COURIER</button>
             </div>
             <div class="form-group col-md-6">
-              <button type="button"  [disabled]="cr_status == '1'" class="btn btn-danger btn-block" (click)="delCourierData()">CANCEL</button>
+              <button type="button"  [disabled]="cr_status == '1'" class="btn btn-danger btn-block" (click)="delCourierData(cr_status)">CANCEL</button>
+              
+              <button type="button"  [disabled]="cr_status != '1'" class="btn btn-success btn-block" (click)="delCourierData(cr_status)">UNCANCEL</button>
             </div>
           </div>
         </div>
@@ -92,7 +94,7 @@
       <div class="form-row ">
         <div class="form-group col-md-12">
           <label for="docChecklist">Document CheckList: </label>
-
+          
           <ul id="docChecklist" class="list-group">
             <li class="list-group-item list-group-item-danger">
               <div class="form-check">
@@ -113,7 +115,7 @@
                 <button type="button" *ngIf="item.checked == true" 
                 class="btn btn-xs float-right statusChecklist" 
                 [ngClass]="{'COMPLETE':'btn-success','PENDING':'btn-danger'}[item.oclStatus]"
-                (click)="updateCheckListStatus(item)">{{item.oclStatus}}</button>
+                (click)="updateCheckListStatus(item)" [disabled]="cr_status == '1'">{{item.oclStatus}} </button>
                 <span class="badge badge-light float-right">{{getFilesCount(item.oclId)}}</span>
               </div>
             </li>
@@ -130,13 +132,13 @@
               <tr>
                 <th> Job No </th>
                 <th>Action</th>
-                <th><button type="button" class="btn btn-sm btn-danger float-right" (click)="openJobMapping()">Add</button></th>
+                <th><button type="button" class="btn btn-sm btn-danger float-right" (click)="openJobMapping()"[disabled]="cr_status == '1'">Add</button></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let row of mapJobData">
                 <td>{{getJobNoFromID(row.jobId)}}</td>
-                <td colspan="2"><button type="button" class="btn btn-sm btn-warning" (click)="unlinkJobMapping(row)">Unlink</button></td>
+                <td colspan="2"><button type="button" class="btn btn-sm btn-warning" (click)="unlinkJobMapping(row)"[disabled]="cr_status == '1'">Unlink</button></td>
               </tr>
             </tbody>
           </table>
