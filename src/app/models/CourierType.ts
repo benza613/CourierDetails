@@ -11,4 +11,5 @@ export class CourierType {
     ocWtUM: string;
     pod: string;
     remark: string;
+    ocStatus: string;
 }

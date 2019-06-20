@@ -40,18 +40,25 @@ export class DetailFormComponent implements OnInit {
     this.initCourierForm();
 
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log(this.id);
+    // console.log(this.id);
 
     let mDate;
     let gvData = this.gs.getCourierDet(this.id);
-    this.cr_status = gvData.rowData[0].ocStatus;
-    console.log("RowData 1:", this.cr_status);
+    console.log("rowData[0]:", gvData.rowData[0]);
+    if(gvData.rowData[0]== undefined ){
+      this.cr_status = "0";
+    } else {
+      this.cr_status = gvData.rowData[0].ocStatus;
+
+    }
+    //console.log("RowData 1:", this.cr_status);
     this.chekLstData = gvData.oc_checklist;
+    console.log("chekLstData:", this.chekLstData);
     this.empLstData = gvData.oc_emplist;
     this.filesUploadedData = gvData.oc_filesUploaded;
     this.filesCoverLetterData = gvData.oc_filesCoverLetter;
     this.tallyJobData = gvData.oc_tallyJobs;
-      if (this.id != null) {
+    if (this.id != null) {
 
       this.courierData = gvData.rowData[0];
       mDate = moment(this.courierData.ocDate, 'DD/MM/YYYY');
@@ -72,11 +79,11 @@ export class DetailFormComponent implements OnInit {
 
     this.setCheckListValues();
 
-    console.log(gvData);
+    //console.log(gvData);
 
-    if (this.cr_status == "1" ) {
+    if (this.cr_status == "1") {
       this.gs.disableNav();
-     }
+    }
 
 
   }
@@ -98,14 +105,13 @@ export class DetailFormComponent implements OnInit {
 
     //ES6 spread operator
     const copy_CForm = { ...this.courierForm.value }
-  
     //format date
     let inValidDateObj = copy_CForm.ocDate;
     let x = moment().year(inValidDateObj.year).month(inValidDateObj.month - 1).date(inValidDateObj.day);
     copy_CForm.ocDate = x.format("DD/MM/YYYY");
     copy_CForm.ocId = this.id;
     copy_CForm.ocCLReq = copy_CForm.ocCLReq == false ? "0" : "1";
-    console.log(copy_CForm);
+    console.log("copy_form data:", copy_CForm);
 
     let selectedDocs = [];
     this.chekLstData.forEach(x => {
@@ -166,7 +172,8 @@ export class DetailFormComponent implements OnInit {
       ocWtUM: ['', [Validators.required, ValidateSelect]],
       ocRecieve: ['', Validators.required],
       remark: ['', Validators.required],
-      ocCLReq: [false]
+      ocCLReq: [false],
+     // ocStatus: [''], //SUSHANT CHANGES 
     });
   }
 
@@ -186,7 +193,8 @@ export class DetailFormComponent implements OnInit {
       ocWtUM: this.courierData.ocWtUM,
       ocRecieve: this.courierData.ocRecieve,
       remark: this.courierData.remark,
-      ocCLReq: this.courierData.ocCLReq == "0" ? false : true
+      ocCLReq: this.courierData.ocCLReq == "0" ? false : true,
+
     });
   }
 
@@ -380,27 +388,27 @@ export class DetailFormComponent implements OnInit {
 
   delCourierData(item) {
     console.log('Deleted Status :', item);
-    if (this.id != null)  {
+    if (this.id != null) {
       this.httpService.postdata('delCourierData',
-      {
-        cr_st_id : item,
-        ocId: this.id
-      }).subscribe(r => {
-        console.log(r);
-        if (r.d.errId === '200') {
-           alert(r.d.resMsg);
-           let myurl = `/CD.aspx/`;
-           this.router.navigate([myurl]);
-        } else {
-          alert(r.d.errMsg);
-        }
-      },
-        err => {
-          console.log('err', err);
-        }
-      );
+        {
+          cr_st_id: item,
+          ocId: this.id
+        }).subscribe(r => {
+          console.log(r);
+          if (r.d.errId === '200') {
+            alert(r.d.resMsg);
+            let myurl = `/CD.aspx/`;
+            this.router.navigate([myurl]);
+          } else {
+            alert(r.d.errMsg);
+          }
+        },
+          err => {
+            console.log('err', err);
+          }
+        );
     }
-   }
+  }
 
 
 }

@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     private modalService: NgbModal) {
     this.frameworkComponents = {
       buttonRenderer: ButtonRendererComponent,
-     // deltaIndicator : deltaIndicator,
+     
     };
     let that = this;
 
@@ -53,11 +53,6 @@ export class HomeComponent implements OnInit {
       },
     };
   }
-  // deltaIndicator () {
-  //   console.log("this._get_emp_dtlist:", this.get_emp_dtlist);
-  //  //  console.log(params);
-  //   return null;
-  // }
   currentData;
 
   columnDefs = [
@@ -70,9 +65,9 @@ export class HomeComponent implements OnInit {
      valueFormatter: function(params) {
     //  console.log("params.empFrom:", that._get_emp_dtlist);
         let arr = that._get_emp_dtlist.filter(x => x.empId ==  params.data.empFrom);
-          console.log("arr:",arr);
+         // console.log("arr:",arr);
          if (arr.length == 0) {
-          return null; y
+          return null; 
         } else {
         return arr[0].empName;
         }
@@ -85,7 +80,17 @@ export class HomeComponent implements OnInit {
     { headerName: 'Unit', field: 'ocWtUM' },
     { headerName: 'Recieve', field: 'ocRecieve' },
     { headerName: 'Remarks', field: 'remark' },
-    { headerName: 'Cover Letter Reqd', field: 'ocCLReq' },
+    { headerName: 'Cover Letter Reqd',
+     field: 'ocCLReq',
+     valueFormatter: function(params) {
+      if (params.data.ocCLReq == "1") {
+        return "YES"
+      }
+      else {
+        return "NO"
+      }
+     }
+  },
     {
       headerName: 'Edit',
       cellRenderer: 'buttonRenderer',
@@ -157,8 +162,7 @@ export class HomeComponent implements OnInit {
           if (r.d.errId === '200') {
             this.rowData = r.d.oc_details;
             this._get_emp_dtlist = r.d.oc_emplist;
-            console.log("this._get_emp_dtlist:", this._get_emp_dtlist);
-
+            //console.log("this._get_emp_dtlist:", this._get_emp_dtlist);
             console.log(r.d);
             this.gs.setGV_CourierData(r.d);
 
