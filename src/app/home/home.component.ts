@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   //that;
   inpFromDate;
   inpToDate;
-  selectedStatus = { stId: "1", stName: "PENDING" };
+  selectedStatus = { stId: "1", stName: 'PENDING' };
   selectedJob;
 
   columnDefs;
@@ -65,10 +65,10 @@ export class HomeComponent implements OnInit {
 
   jobList = [];
   statusList = [
-    { stId: "1", stName: "PENDING" },
-    { stId: "2", stName: "COMPLETE" },
-    { stId: "3", stName: "ALL" },
-    { stId: "4", stName: "CANCEL" }
+    { stId: '1', stName: 'PENDING' },
+    { stId: '2', stName: 'COMPLETE' },
+    { stId: '3', stName: 'ALL' },
+    { stId: '4', stName: 'CANCEL' }
   ];
 
   ngOnInit() {
@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit {
     this.gs.disableNav();
     this._authService.login();
 
-    let dateService = this.gs.getDetailsRange();
+    const dateService = this.gs.getDetailsRange();
     this.inpFromDate = dateService.from;
     this.inpToDate = dateService.to;
 
@@ -199,7 +199,7 @@ export class HomeComponent implements OnInit {
   }
 
   public addDetailsForm() {
-    let myurl = `/CD.aspx/details/`;
+    const myurl = `/CD.aspx/details/`;
     this.router.navigate([myurl]);
   }
 
@@ -223,13 +223,13 @@ export class HomeComponent implements OnInit {
     //type 1-> pending 2->complete
     let arr = this._map_idx_chklist.filter(x => x.ocId == ocId);
 
-    if (arr.length == 0) {
+    if (arr.length === 0) {
       return true;
     } else {
       let res = false;
       for (let ix = 0; ix < arr.length; ix++) {
         const e = arr[ix];
-        if (e.oclStatus == "PENDING") {
+        if (e.oclStatus === 'PENDING') {
           res = true;
           break;
         }
@@ -240,16 +240,16 @@ export class HomeComponent implements OnInit {
   }
 
   public ValidateCourierComplete(ocId: any) {
-    //type 1-> pending 2->complete
-    let arr = this._map_idx_chklist.filter(x => x.ocId == ocId);
+    // type 1-> pending 2->complete
+    const arr = this._map_idx_chklist.filter(x => x.ocId === ocId);
 
-    if (arr.length == 0) {
+    if (arr.length === 0) {
       return false;
     } else {
       let res = true;
       for (let ix = 0; ix < arr.length; ix++) {
         const e = arr[ix];
-        if (e.oclStatus == "PENDING") {
+        if (e.oclStatus === 'PENDING') {
           res = false;
           break;
         }
@@ -260,15 +260,15 @@ export class HomeComponent implements OnInit {
   }
 
   public ValidateCourierCancel(ocId: any) {
-    //type 1-> pending 2->complete
-    let arr = this.rowData.filter(x => x.ocId == ocId);
-    if (arr.length == 0) {
+    // type 1-> pending 2->complete
+    const arr = this.rowData.filter(x => x.ocId === ocId);
+    if (arr.length === 0) {
       return true;
     } else {
       let res = false;
       for (let ix = 0; ix < arr.length; ix++) {
         const e = arr[ix];
-        if (e.ocStatus == "1") {
+        if (e.ocStatus === '1') {
           res = true;
           break;
         }
