@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
-import { DateType } from '../models/date-type.model';
-
+import { Injectable } from "@angular/core";
+import { DateType } from "../models/date-type.model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class GlobalService {
-
   _courListData;
   _navFSFrame = true;
 
@@ -19,11 +17,7 @@ export class GlobalService {
   private _jobfilter_ToDate: DateType;
 
   private _jobfilter_Data: any = [];
-  constructor() {
-
-
-
-  }
+  constructor() {}
 
   setGV_CourierData(val: any) {
     this._courListData = val;
@@ -31,66 +25,70 @@ export class GlobalService {
 
   setGV_AddCourRow(val: any) {
     this._courListData.oc_details.push(val);
-
   }
 
   getCourierDet(ocId: any) {
-
     this._currentCourierId = ocId;
     // tslint:disable-next-line:triple-equals
     return {
-      rowData: this._courListData.oc_details.filter((x) => x.ocId == ocId),
+      rowData: this._courListData.oc_details.filter(x => x.ocId == ocId),
       oc_checklist: this._courListData.oc_checklist,
       oc_emplist: this._courListData.oc_emplist,
       oc_filesUploaded: this._courListData.oc_filesUploaded,
       oc_filesCoverLetter: this._courListData.oc_filesCoverLetter,
       oc_map_index_checklist: this._courListData.oc_map_index_checklist,
       oc_tallyJobs: this._courListData.oc_tallyJobs,
-      oc_map_index_jobs: this._courListData.oc_map_index_jobs
-    }
+      oc_map_index_jobs: this._courListData.oc_map_index_jobs,
+      oc_orglist: this._courListData.oc_orglist,
+      ToLoc_org: this._courListData.ToLoc_org,
+      FrmLoc: this._courListData.FrmLoc
+    };
   }
-
 
   setDetailsRange_Initial(today: any) {
     this._details_FromDate = {
       year: today.year(),
       month: today.month(),
       day: today.date()
-    }
+    };
 
     //add 1 since moment months are from 0-11
     this._details_ToDate = {
       year: today.year(),
       month: today.month() + 1,
       day: today.date()
-    }
+    };
 
     this._jobfilter_FromDate = {
       year: today.year(),
       month: today.month(),
       day: today.date()
-    }
+    };
 
     //add 1 since moment months are from 0-11
     this._jobfilter_ToDate = {
       year: today.year(),
       month: today.month() + 1,
       day: today.date()
-    }
+    };
 
     console.log("Date Set");
-
   }
 
   getDetailsRange() {
     return {
       from: this._details_FromDate,
       to: this._details_ToDate
-
-    }
+    };
   }
 
   getCurrentCourId() {
+    if (      this._currentCourierId === undefined ||
+      this._currentCourierId === null
+    ) {
+      return "";
+    }
+    
     return this._currentCourierId;
   }
 
@@ -113,7 +111,7 @@ export class GlobalService {
       year: newDate.year,
       month: newDate.month,
       day: newDate.day
-    }
+    };
   }
 
   updateToDate(newDate: any) {
@@ -142,18 +140,18 @@ export class GlobalService {
         }
       });
     } else {
-      //add new 
+      //add new
       this._courListData.oc_map_index_checklist.push({
         ocId: objCl.ocId,
         oclId: objCl.oclId,
         oclStatus: newStatus
-      })
+      });
     }
 
     return {
       oc_checklist: this._courListData.oc_checklist,
-      oc_map_index_checklist: this._courListData.oc_map_index_checklist,
-    }
+      oc_map_index_checklist: this._courListData.oc_map_index_checklist
+    };
   }
 
   getJobFilterFrom() {
@@ -173,5 +171,10 @@ export class GlobalService {
 
   getFilteredJobData() {
     return this._jobfilter_Data;
+  }
+
+  getHtmlLinkPath(id) {
+    if (id != null) {
+    }
   }
 }

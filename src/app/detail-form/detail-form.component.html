@@ -46,98 +46,110 @@
             id="iPOD"
             formControlName="pod"
             [ngClass]="{ 'is-invalid': submitted && f.pod.errors }"
-            placeholder="Place of Delivery"
+            placeholder="Tracking No"
           />
         </div>
       </div>
-      <div class="form-row"> 
-          <div class="form-group col-md-4">
-              <label for="iEmpFrom">Sent To Organisation </label>
-              <select
-                id="iEmpFrom"
-                class="form-control"
-                formControlName="empFrom"
-                [ngClass]="{
-                  'is-invalid':
-                    submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption
-                }"
-              >
-                <option *ngFor="let emp of empLstData" [ngValue]="emp.empId">{{
-                  emp.empName
-                }}</option>
-              </select>
-            </div> 
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="iEmpFrom">Sent To Organisation </label>
+          <ng-select
+            formControlName="OrgID"
+            bindValue="OrgID"
+            [items]="orgLstData"
+            [addTag]="true"
+            (change)="addOrg($event)"
+            bindLabel="OrgName"
+            placeholder="Organisation"
+            required
+            appendTo="body"
+            [ngClass]="{ 'is-invalid': submitted && f.OrgID.errors }"
+          >
+          </ng-select>
+        </div>
         <div class="form-group col-md-4">
           <label for="inputEmail4">From place</label>
-          <input
-            type="text"
-            class="form-control"
-            id="iCity"
-            formControlName="cityTo"
-            [ngClass]="{ 'is-invalid': submitted && f.cityTo.errors }"
-            placeholder="City"
-          />
+          <ng-select
+            formControlName="cityFrom"
+            [items]="LocLstData"
+            [addTag]="true"
+            (change)="addfrmloc($event)"
+            placeholder="From Location"
+            required
+            appendTo="body"
+            [ngClass]="{ 'is-invalid': submitted && f.cityFrom.errors }"
+          >
+          </ng-select>
         </div>
         <div class="form-group col-md-4">
           <div class="form-group">
             <label for="inputEmail4">TO place</label>
-            <input
-              type="text"
-              class="form-control"
-              id="iCity"
+            <ng-select
               formControlName="cityTo"
+              [items]="LocLstData"
+              [addTag]="true"
+              (change)="addtoloc($event)"
+              placeholder="TO Location"
+              required
+              appendTo="body"
               [ngClass]="{ 'is-invalid': submitted && f.cityTo.errors }"
-              placeholder="City"
-            />
+            >
+            </ng-select>
           </div>
         </div>
       </div>
       <div class="form-row">
-          <div class="form-group col-md-4">
-              <label for="iEmpFrom">From Person </label>
-              <select
-                id="iEmpFrom"
-                class="form-control"
-                formControlName="empFrom"
-                [ngClass]="{
-                  'is-invalid':
-                    submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption
-                }"
-              >
-                <option *ngFor="let emp of empLstData" [ngValue]="emp.empId">{{
-                  emp.empName
-                }}</option>
-              </select>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="iEmpFrom">To Person </label>
-                <select
-                  id="iEmpFrom"
-                  class="form-control"
-                  formControlName="empFrom"
-                  [ngClass]="{
-                    'is-invalid':
-                      submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption
-                  }"
-                >
-                  <option *ngFor="let emp of empLstData" [ngValue]="emp.empId">{{
-                    emp.empName
-                  }}</option>
-                </select>
-              </div>
+        <div class="form-group col-md-4">
+          <label for="iEmpFrom">From Person </label>
+          <!-- <select
+            id="iEmpFrom"
+            class="form-control"
+            formControlName="empFrom"
+            [ngClass]="{'is-invalid':submitted && f.ocWtUM.errors && f.ocWtUM.errors.inValidOption}">
+            <option *ngFor="let emp of empLstData" [ngValue]="emp.empId">{{
+              emp.empName
+            }}</option>
+          </select> -->
+          <ng-select
+            formControlName="empFrom"
+            bindValue="empName"
+            [items]="empLstData"
+            bindLabel="empName"
+            placeholder="From Person"
+            [addTag]="true"
+            (change)="addToNewEmp($event)"
+            [virtualScroll]="true"
+            required
+            appendTo="body"
+            [ngClass]="{ 'is-invalid': submitted && f.empFrom.errors }"
+          >
+          </ng-select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="iEmpFrom">To Person </label>
+          <ng-select
+            formControlName="empTo"
+            [items]="orgLocLstData"
+            [addTag]="true"
+            (change)="addToNewEmp($event)"
+            [virtualScroll]="true"
+            placeholder="To Person"
+            [ngClass]="{ 'is-invalid': submitted && f.empTo.errors }"
+          >
+          </ng-select>
+        </div>
 
-              <div class="form-group col-md-4">
-                  <label for="inputPassword4">Mode</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="iMode"
-                    formControlName="mode"
-                    [ngClass]="{ 'is-invalid': submitted && f.mode.errors }"
-                    placeholder="Mode"
-                  />
-                </div>
-
+        <div class="form-group col-md-4">
+          <label for="inputPassword4">Mode</label>
+          <input
+            type="text"
+            class="form-control"
+            id="iMode"
+            formControlName="mode"
+            [ngClass]="{ 'is-invalid': submitted && f.mode.errors }"
+            placeholder="Mode"
+          />
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
@@ -181,9 +193,7 @@
             />
           </div>
         </div>
-
       </div>
-      
 
       <div class="form-row">
         <div class="form-group col-md-12">

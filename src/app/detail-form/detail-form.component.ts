@@ -23,11 +23,14 @@ export class DetailFormComponent implements OnInit {
   filesUploadedData: any;
   filesCoverLetterData: any;
   tallyJobData: any;
-
+  orgLstData: any;
+  orgLocLstData:any;
+  LocLstData:any;
   mapChecklistData: any = [];
   mapJobData: any = [];
   id; cr_status;
-
+  // sushant changes
+  show = false;
   constructor(private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private router: Router, private gs: GlobalService,
@@ -55,17 +58,18 @@ export class DetailFormComponent implements OnInit {
     this.chekLstData = gvData.oc_checklist;
     console.log("chekLstData:", this.chekLstData);
     this.empLstData = gvData.oc_emplist;
+    this.orgLstData = gvData.oc_orglist;
+    this.orgLocLstData =  gvData.ToLoc_org;
+    this.LocLstData = gvData.FrmLoc;
     this.filesUploadedData = gvData.oc_filesUploaded;
     this.filesCoverLetterData = gvData.oc_filesCoverLetter;
     this.tallyJobData = gvData.oc_tallyJobs;
     if (this.id != null) {
-
       this.courierData = gvData.rowData[0];
       mDate = moment(this.courierData.ocDate, 'DD/MM/YYYY');
       this.gs.enableNav();
       this.mapChecklistData = gvData.oc_map_index_checklist;
       this.mapJobData = gvData.oc_map_index_jobs.filter((x) => x.ocId == this.id);
-
 
     } else {
       this.courierData = new CourierType();
@@ -94,11 +98,11 @@ export class DetailFormComponent implements OnInit {
   onSubmit() {
 
     this.submitted = true;
+console.log("courierData:",this.courierForm);
 
     // stop here if form is invalid
     if (this.courierForm.invalid) {
       console.log('inv', this.courierForm.invalid);
-
       return;
     }
 
@@ -111,6 +115,7 @@ export class DetailFormComponent implements OnInit {
     copy_CForm.ocDate = x.format("DD/MM/YYYY");
     copy_CForm.ocId = this.id;
     copy_CForm.ocCLReq = copy_CForm.ocCLReq == false ? "0" : "1";
+    //copy_CForm.ocRecieve =  "0";
     console.log("copy_form data:", copy_CForm);
 
     let selectedDocs = [];
@@ -165,7 +170,7 @@ export class DetailFormComponent implements OnInit {
       ocDate: ['', Validators.required],
       courier: ['', Validators.required],
       empFrom: ['', Validators.required],
-      cityTo: ['', Validators.required],
+      //cityTo: ['', Validators.required],
       mode: ['', Validators.required],
       pod: ['', Validators.required],
       ocWt: ['', Validators.required],
@@ -174,6 +179,15 @@ export class DetailFormComponent implements OnInit {
       remark: ['', Validators.required],
       ocCLReq: [false],
      // ocStatus: [''], //SUSHANT CHANGES 
+     //SUSHANT NEW CHANGES 
+     empTo:[null, Validators.required],
+     cityFrom:[null, Validators.required],
+     cityTo:[null, Validators.required],
+     OrgID :[null, Validators.required],
+
+
+
+
     });
   }
 
@@ -191,9 +205,13 @@ export class DetailFormComponent implements OnInit {
       pod: this.courierData.pod,
       ocWt: this.courierData.ocWt,
       ocWtUM: this.courierData.ocWtUM,
-      ocRecieve: this.courierData.ocRecieve,
+      //ocRecieve: this.courierData.ocRecieve,
+      ocRecieve:"0",
       remark: this.courierData.remark,
       ocCLReq: this.courierData.ocCLReq == "0" ? false : true,
+      empTo: this.courierData.empTo,
+      cityFrom: this.courierData.cityFrom,
+      OrgID: this.courierData.OrgID,
 
     });
   }
@@ -410,5 +428,90 @@ export class DetailFormComponent implements OnInit {
     }
   }
 
+  addToNewEmp(evt){
+  
+    console.log(evt);
+    const idx = this.orgLocLstData.findIndex(obj => obj === evt);
+    console.log(this.orgLocLstData);
+
+    // const nwObj = evt[evt.length - 1];
+    console.log(idx);
+
+    // const idx = this.empLstData.findIndex(obj => obj.empName === nwObj['empName']);
+    // console.log("--------data------");
+   
+    // console.log(idx);
+    // if(idx===-1)
+    // {
+    //   console.log(nwObj['empName']);
+    // }
+
+
+    if(evt != undefined && idx===-1){
+     // this.toperson = evt;
+      // this.arr = [...this.arr, evt];
+      // console.log( this.arr);
+
+      this.orgLocLstData = [...this.orgLocLstData, evt];
+      console.log( this.orgLocLstData);
+      
+     // this.spinner.show();
+
+      // let clObj = {
+      //   empId: 0,
+      //   empName: evt,
+        
+      // };
+
+      // this.httpService.postdata('InsertEmployee', clObj)
+      //   .subscribe(r => {
+      //     console.log(r);
+      //     if (r.d.errId === '200') {
+
+            
+      //       //this.empLstData = refreshedChkLstData.oc_checklist;
+      //      // this.mapChecklistData = refreshedChkLstData.oc_map_index_checklist;
+      //      // this.setCheckListValues();
+      //       this.spinner.hide();
+
+      //       alert(r.d.resMsg);
+      //     } else {
+      //       alert(r.d.errMsg);
+      //     }
+      //   },
+      //     err => {
+      //       console.log('err', err);
+      //     }
+      //   );
+
+    }
+  }
+  addtoloc(evt){
+    console.log(evt);
+    const loc = this.LocLstData.findIndex(obj => obj === evt);
+    if(evt != undefined && loc===-1){
+      this.LocLstData = [...this.LocLstData, evt];
+      //console.log( this.LocLstData);
+    }
+  }
+  addfrmloc(evt){
+    console.log(evt);  
+    const frm = this.LocLstData.findIndex(obj => obj === evt);
+    if(evt != undefined && frm===-1){
+    // insert new location from db
+      this.LocLstData = [...this.LocLstData, evt];
+      //console.log( this.LocLstData);
+    }
+  }
+
+  addOrg(evt){
+
+    const org = this.orgLstData.findIndex(obj => obj === evt);
+    if(evt != undefined && org===-1){
+    // insert new location from db
+      this.orgLstData = [...this.orgLstData, evt];
+      //console.log( this.orgLstData);
+    }
+  }
 
 }

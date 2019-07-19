@@ -90,27 +90,13 @@ export class HomeComponent implements OnInit {
       {
         headerName: "From Emp",
         field: "empFrom",
-        valueFormatter: this.empnamefromatter
-        // valueFormatter: function(params) {
-        //  console.log("params.empFrom:", params);
-
-        //   let arr = this._get_emp_dtlist.filter(
-        //     x => x.empId == params.data.empFrom
-        //   );
-        //   // console.log("arr:",arr);
-        //   if (arr.length == 0) {
-        //     return null;
-        //   } else {
-        //     return arr[0].empName;
-        //   }
-        //}
       },
       { headerName: "To City", field: "cityTo" },
       { headerName: "Mode", field: "mode" },
       { headerName: "POD", field: "pod" },
       { headerName: "Weight", field: "ocWt" },
       { headerName: "Unit", field: "ocWtUM" },
-      { headerName: "Recieve", field: "ocRecieve" },
+      // { headerName: "Recieve", field: "ocRecieve" },
       { headerName: "Remarks", field: "remark" },
       {
         headerName: "Cover Letter Reqd",
@@ -217,7 +203,7 @@ export class HomeComponent implements OnInit {
       .month(dateObj.month - 1)
       .date(dateObj.day)
       .format("YYYY/MM/DD");
-  }
+  } 
 
   public ValidateCourierPending(ocId: any) {
     //type 1-> pending 2->complete

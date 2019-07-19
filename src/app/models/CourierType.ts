@@ -12,4 +12,9 @@ export class CourierType {
     pod: string;
     remark: string;
     ocStatus: string;
+    empTo: string;
+    cityFrom: string;
+    OrgID : string;
+
+
 }
