@@ -146,11 +146,13 @@ console.log("courierData:",this.courierForm);
             const myurl = `${url}/${r.d.misc[0]}`;
             this.router.navigate([myurl]);
 
-          } else {
-
+          } 
+          else {
+            alert(r.d.resMsg);
           }
 
-        } else {
+        } 
+        else {
           alert(r.d.errMsg);
         }
       },
@@ -429,89 +431,44 @@ console.log("courierData:",this.courierForm);
   }
 
   addToNewEmp(evt){
-  
-    console.log(evt);
     const idx = this.orgLocLstData.findIndex(obj => obj === evt);
-    console.log(this.orgLocLstData);
-
-    // const nwObj = evt[evt.length - 1];
-    console.log(idx);
-
-    // const idx = this.empLstData.findIndex(obj => obj.empName === nwObj['empName']);
-    // console.log("--------data------");
-   
-    // console.log(idx);
-    // if(idx===-1)
-    // {
-    //   console.log(nwObj['empName']);
-    // }
-
-
     if(evt != undefined && idx===-1){
-     // this.toperson = evt;
-      // this.arr = [...this.arr, evt];
-      // console.log( this.arr);
-
       this.orgLocLstData = [...this.orgLocLstData, evt];
       console.log( this.orgLocLstData);
-      
-     // this.spinner.show();
-
-      // let clObj = {
-      //   empId: 0,
-      //   empName: evt,
-        
-      // };
-
-      // this.httpService.postdata('InsertEmployee', clObj)
-      //   .subscribe(r => {
-      //     console.log(r);
-      //     if (r.d.errId === '200') {
-
-            
-      //       //this.empLstData = refreshedChkLstData.oc_checklist;
-      //      // this.mapChecklistData = refreshedChkLstData.oc_map_index_checklist;
-      //      // this.setCheckListValues();
-      //       this.spinner.hide();
-
-      //       alert(r.d.resMsg);
-      //     } else {
-      //       alert(r.d.errMsg);
-      //     }
-      //   },
-      //     err => {
-      //       console.log('err', err);
-      //     }
-      //   );
-
     }
   }
-  addtoloc(evt){
+  addloc(evt){
     console.log(evt);
     const loc = this.LocLstData.findIndex(obj => obj === evt);
     if(evt != undefined && loc===-1){
       this.LocLstData = [...this.LocLstData, evt];
-      //console.log( this.LocLstData);
     }
   }
-  addfrmloc(evt){
-    console.log(evt);  
-    const frm = this.LocLstData.findIndex(obj => obj === evt);
-    if(evt != undefined && frm===-1){
-    // insert new location from db
-      this.LocLstData = [...this.LocLstData, evt];
-      //console.log( this.LocLstData);
+  // addfrmloc(evt){
+  //   console.log(evt);  
+  //   const frm = this.LocLstData.findIndex(obj => obj === evt);
+  //   if(evt != undefined && frm===-1){
+  //     this.LocLstData = [...this.LocLstData, evt];
+  //   }
+  // }
+
+  addFromEmp(evt){
+    console.log(evt);
+    const idx = this.empLstData.findIndex(obj => obj === evt);
+    console.log(this.empLstData);
+
+    // const nwObj = evt[evt.length - 1];
+    console.log(idx);
+    if(evt != undefined && idx===-1){
+      // this.toperson = evt;
+       // this.arr = [...this.arr, evt];
+       // console.log( this.arr);
+ 
+       this.empLstData = [...this.empLstData, evt];
+ 
+       console.log( this.empLstData);
     }
+
+
   }
-
-  addOrg(evt){
-
-    const org = this.orgLstData.findIndex(obj => obj === evt);
-    if(evt != undefined && org===-1){
-    // insert new location from db
-      this.orgLstData = [...this.orgLstData, evt];
-      //console.log( this.orgLstData);
-    }
-  }
-
 }

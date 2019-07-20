@@ -57,8 +57,6 @@
             formControlName="OrgID"
             bindValue="OrgID"
             [items]="orgLstData"
-            [addTag]="true"
-            (change)="addOrg($event)"
             bindLabel="OrgName"
             placeholder="Organisation"
             required
@@ -73,7 +71,7 @@
             formControlName="cityFrom"
             [items]="LocLstData"
             [addTag]="true"
-            (change)="addfrmloc($event)"
+            (change)="addloc($event)"
             placeholder="From Location"
             required
             appendTo="body"
@@ -88,7 +86,7 @@
               formControlName="cityTo"
               [items]="LocLstData"
               [addTag]="true"
-              (change)="addtoloc($event)"
+              (change)="addloc($event)"
               placeholder="TO Location"
               required
               appendTo="body"
@@ -117,7 +115,7 @@
             bindLabel="empName"
             placeholder="From Person"
             [addTag]="true"
-            (change)="addToNewEmp($event)"
+            (change)="addFromEmp($event)"
             [virtualScroll]="true"
             required
             appendTo="body"
